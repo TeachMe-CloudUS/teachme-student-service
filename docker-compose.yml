@@ -1,0 +1,6 @@
+services:
+  teaching-service:
+    image: docker.io/library/teaching-service:0.0.1-SNAPSHOT
+    container_name: teaching-service
+    ports:
+      - "8080:8080"
