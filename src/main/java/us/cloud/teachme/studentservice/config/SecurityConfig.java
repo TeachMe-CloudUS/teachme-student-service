@@ -1,4 +1,4 @@
-package us.cloud.teachme.teaching_service.security;
+package us.cloud.teachme.studentservice.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;

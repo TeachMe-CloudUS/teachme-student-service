@@ -1,10 +1,10 @@
-package us.cloud.teachme.teaching_service;
+package us.cloud.teachme.studentservice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class TeachingServiceApplicationTests {
+class StudentServiceApplicationTests {
 
 	@Test
 	void contextLoads() {

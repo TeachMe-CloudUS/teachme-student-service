@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>us.cloud.teachme</groupId>
-	<artifactId>teaching-service</artifactId>
+	<artifactId>student-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>teaching-service</name>
+	<name>Student Service</name>
 	<description>Demo project for Spring Boot</description>
 
 	<properties>
@@ -32,6 +32,12 @@
 		<dependency>
 			<groupId>us.cloud.teachme</groupId>
 			<artifactId>auth-utils</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>us.cloud.teachme</groupId>
+			<artifactId>kafka-config</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 
