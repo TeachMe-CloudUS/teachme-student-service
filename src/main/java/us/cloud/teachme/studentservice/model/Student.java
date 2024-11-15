@@ -1,13 +1,15 @@
 package us.cloud.teachme.studentservice.model;
 
 import lombok.Builder;
+import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
-@Document("Student")
+@Data
 @Builder
+@Document("Student")
 public class Student {
 
     @Id
