@@ -1,4 +1,4 @@
-package us.cloud.teachme.studentservice.model;
+package us.cloud.teachme.studentservice.domain.model;
 
 public enum SubscriptionPlan {
     BASIC,
