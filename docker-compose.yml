@@ -1,6 +1,15 @@
 services:
-  teaching-service:
+  student-service:
     image: docker.io/library/teaching-service:0.0.1-SNAPSHOT
-    container_name: teaching-service
+    container_name: student-service
     ports:
       - "8080:8080"
+
+  mongo-db:
+    image: mongodb/mongodb-community-server
+    container_name: db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=user
+      - MONGO_INITDB_ROOT_PASSWORD=pass
+    ports:
+      - "27017:27017"
