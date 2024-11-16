@@ -1,6 +1,6 @@
 services:
   mongo-db:
-    image: mongodb/mongodb-community-server
+    image: mongodb/mongodb-community-server:6.0.12-ubi8
     container_name: db
     environment:
       - MONGO_INITDB_ROOT_USERNAME=user
