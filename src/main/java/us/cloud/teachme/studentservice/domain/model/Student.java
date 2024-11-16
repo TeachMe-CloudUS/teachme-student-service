@@ -1,15 +1,14 @@
 package us.cloud.teachme.studentservice.domain.model;
 
-import lombok.Builder;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import us.cloud.teachme.studentservice.domain.exception.DomainException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@Builder
 @Document("Student")
 public class Student {
 
@@ -28,10 +27,17 @@ public class Student {
 
     private List<String> forumPosts;
 
+    public Student() {
+        this.enrolledCourses = new ArrayList<>();
+        this.completedCourses = new ArrayList<>();
+        this.forumPosts = new ArrayList<>();
+    }
+
     public void enrollInCourse(String courseId) {
         if (enrolledCourses.contains(courseId)) {
             throw new DomainException("Already enrolled in course");
         }
+
         enrolledCourses.add(courseId);
     }
 
@@ -39,6 +45,7 @@ public class Student {
         if (!completedCourses.contains(courseId)) {
             throw new DomainException("Not enrolled in course");
         }
-    }
 
+        completedCourses.add(courseId);
+    }
 }

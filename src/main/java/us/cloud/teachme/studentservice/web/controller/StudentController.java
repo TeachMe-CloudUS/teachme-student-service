@@ -9,9 +9,6 @@ import us.cloud.teachme.studentservice.application.dto.StudentDto;
 import us.cloud.teachme.studentservice.application.service.CompleteCourseService;
 import us.cloud.teachme.studentservice.application.service.EnrollmentService;
 import us.cloud.teachme.studentservice.application.service.StudentService;
-import us.cloud.teachme.studentservice.web.request.CompleteCourseRequestDto;
-import us.cloud.teachme.studentservice.web.request.EnrollStudentRequestDto;
-import us.cloud.teachme.studentservice.web.request.GetStudentByIdRequestDto;
 
 import java.util.List;
 
@@ -30,23 +27,23 @@ public class StudentController {
     }
 
     @GetMapping("/{id}")
-    public StudentDto test(@RequestBody GetStudentByIdRequestDto requestDto) {
-        return studentService.getStudentById(requestDto.getStudentId());
+    public StudentDto getStudentById(@PathVariable String id) {
+        return studentService.getStudentById(id);
     }
 
     @PostMapping("/{studentId}/courses/{courseId}/enroll")
-    public ResponseEntity<Void> enrollStudent(@RequestBody EnrollStudentRequestDto requestDto) {
+    public ResponseEntity<Void> enrollStudent(@PathVariable String studentId, @PathVariable String courseId) {
         enrollmentService.enrollStudentInCourse(
-                new EnrollStudentCommand(requestDto.getStudentId(), requestDto.getCourseId())
+                new EnrollStudentCommand(studentId, courseId)
         );
 
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/{studentId}/courses/{courseId}/complete")
-    public ResponseEntity<Void> completeCourse(@RequestBody CompleteCourseRequestDto requestDto) {
+    public ResponseEntity<Void> completeCourse(@PathVariable String studentId, @PathVariable String courseId) {
         completeCourseService.completeStudentCourse(
-                new CompleteCourseCommand(requestDto.getStudentId(), requestDto.getCourseId())
+                new CompleteCourseCommand(studentId, courseId)
         );
 
         return ResponseEntity.ok().build();
