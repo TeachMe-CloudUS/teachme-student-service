@@ -21,4 +21,9 @@ public interface MongoStudentRepository extends MongoRepository<Student, String>
     default Optional<Student> findStudentsById(String id) {
         return findById(id);
     }
+
+    @Override
+    default Student saveStudent(Student student) {
+        return save(student);
+    }
 }

@@ -33,6 +33,14 @@ public class Student {
         this.forumPosts = new ArrayList<>();
     }
 
+    public Student(String userId, String phoneNumber, SubscriptionPlan plan) {
+        super();
+
+        this.userId = userId;
+        this.phoneNumber = phoneNumber;
+        this.plan = plan;
+    }
+
     public void enrollInCourse(String courseId) {
         if (enrolledCourses.contains(courseId)) {
             throw new DomainException("Already enrolled in course");

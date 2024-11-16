@@ -10,4 +10,6 @@ public interface StudentRepository {
     List<Student> findAllStudents();
 
     Optional<Student> findStudentsById(String id);
+
+    Student saveStudent(Student student);
 }
