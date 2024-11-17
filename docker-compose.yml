@@ -1,9 +1,12 @@
 services:
-  mongo-db:
-    image: mongodb/mongodb-community-server:6.0.12-ubi8
-    container_name: db
+  student-service:
+    build: .
+    networks:
+      - student-service-network
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=user
-      - MONGO_INITDB_ROOT_PASSWORD=pass
+      - SPRING_PROFILES_ACTIVE=prod
     ports:
-      - "27017:27017"
+      - "8080:8080"
+
+networks:
+  student-service-network:

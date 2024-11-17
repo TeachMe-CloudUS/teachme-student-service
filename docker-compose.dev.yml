@@ -1,0 +1,31 @@
+services:
+  student-service:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - .:/app
+      - /app/target
+      - /root/.m2:/root/.m2
+    networks:
+      - student-service-network
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mongo-db
+
+  mongo-db:
+    image: mongodb/mongodb-community-server:6.0.12-ubi8
+    container_name: db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=user
+      - MONGO_INITDB_ROOT_PASSWORD=pass
+    networks:
+      - student-service-network
+    ports:
+      - "27017:27017"
+
+networks:
+  student-service-network:
