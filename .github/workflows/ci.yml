@@ -7,8 +7,8 @@ jobs:
   build:
     runs-on: ${{matrix.os}}
     strategy:
-     matrix:
-      os: [ ubuntu-latest ]
+      matrix:
+        os: [ ubuntu-latest ]
 
     steps:
       - name: Check out the code
@@ -21,14 +21,14 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: clear project
+      - name: Clear project
         run: mvn clean
 
-      - name: compile the project
+      - name: Compile the project
         run: mvn compile
 
-      - name: run test case
-        run: mvn test
+      - name: Run test case
+        run: mvn test -Dexcludes=**/integration/**/*Test.java
 
       - name: Build with Maven
         run: mvn clean install package
