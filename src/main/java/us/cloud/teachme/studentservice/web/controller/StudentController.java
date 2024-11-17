@@ -31,9 +31,9 @@ public class StudentController {
         return studentService.getStudents();
     }
 
-    @GetMapping("/{id}")
-    public StudentDto getStudentById(@PathVariable String id) {
-        return studentService.getStudentById(id);
+    @GetMapping("/{studentId}")
+    public StudentDto getStudentById(@PathVariable String studentId) {
+        return studentService.getStudentById(studentId);
     }
 
     @PostMapping("/{studentId}/courses/{courseId}/enroll")
