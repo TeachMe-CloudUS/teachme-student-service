@@ -23,6 +23,8 @@ public class EnrollmentService {
 
         student.enrollInCourse(command.courseId());
 
+        studentRepository.saveStudent(student);
+
         eventPublisher.publish(new StudentEnrollmentEvent(
                 command.studentId(),
                 command.studentId()
