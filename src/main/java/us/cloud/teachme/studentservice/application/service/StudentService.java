@@ -26,4 +26,8 @@ public class StudentService {
         Student student = studentRepository.findStudentsById(id).orElse(null);
         return student != null ? new StudentDto(student) : null;
     }
+
+    public void deleteStudentById(String id) {
+        studentRepository.deleteStudentById(id);
+    }
 }

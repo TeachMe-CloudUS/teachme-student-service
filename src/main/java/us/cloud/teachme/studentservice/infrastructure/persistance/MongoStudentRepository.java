@@ -11,7 +11,6 @@ import java.util.Optional;
 @Service
 public interface MongoStudentRepository extends MongoRepository<Student, String>, StudentRepository {
 
-
     @Override
     default List<Student> findAllStudents() {
         return findAll();
@@ -26,4 +25,10 @@ public interface MongoStudentRepository extends MongoRepository<Student, String>
     default Student saveStudent(Student student) {
         return save(student);
     }
+
+    @Override
+    default void deleteStudentById(String id) {
+        deleteById(id);
+    }
+
 }

@@ -22,6 +22,9 @@ public class CompleteCourseService {
                 .orElseThrow(() -> new StudentNotFoundException(command.studentId()));
 
         student.completeCourse(command.courseId());
+
+        studentRepository.saveStudent(student);
+
         eventPublisher.publish(new CourseCompletedEvent(command.studentId(), command.courseId()));
     }
 }

@@ -12,4 +12,6 @@ public interface StudentRepository {
     Optional<Student> findStudentsById(String id);
 
     Student saveStudent(Student student);
+
+    void deleteStudentById(String id);
 }
