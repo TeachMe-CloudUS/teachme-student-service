@@ -28,7 +28,7 @@ jobs:
         run: mvn compile
 
       - name: Run test case
-        run: mvn test -Dexcludes=**/integration/**/*Test.java
+        run: mvn test 
 
       - name: Build with Maven
         run: mvn clean install package
