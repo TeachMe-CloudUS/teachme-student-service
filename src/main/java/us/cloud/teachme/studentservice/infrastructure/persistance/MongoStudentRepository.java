@@ -31,4 +31,11 @@ public interface MongoStudentRepository extends MongoRepository<Student, String>
         deleteById(id);
     }
 
+    Optional<Student> findByUserId(String userId);
+
+    @Override
+    default Optional<Student> findStudentByUserId(String userId) {
+        return findByUserId(userId);
+    }
+
 }

@@ -1,5 +1,7 @@
 package us.cloud.teachme.studentservice.application.command;
 
-public record CreateStudentCommand(String userId, String phoneNumber, String plan) {
+import us.cloud.teachme.studentservice.domain.model.SubscriptionPlan;
+
+public record CreateStudentCommand(String userId, String phoneNumber, SubscriptionPlan plan) {
 
 }

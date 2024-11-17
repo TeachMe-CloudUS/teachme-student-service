@@ -31,7 +31,7 @@ class StudentTest {
 
         // Act & Assert
         DomainException exception = assertThrows(DomainException.class, () -> student.enrollInCourse("course101"));
-        assertEquals("Already enrolled in course", exception.getMessage());
+        assertEquals("Already enrolled in course: course101", exception.getMessage());
     }
 
     @Test
@@ -50,7 +50,7 @@ class StudentTest {
     void completeCourse_shouldThrowException_whenNotEnrolledInCourse() {
         // Act & Assert
         DomainException exception = assertThrows(DomainException.class, () -> student.completeCourse("course101"));
-        assertEquals("Not enrolled in course", exception.getMessage());
+        assertEquals("Not enrolled in course: course101", exception.getMessage());
     }
 
     @Test
@@ -61,6 +61,6 @@ class StudentTest {
 
         // Act & Assert
         DomainException exception = assertThrows(DomainException.class, () -> student.completeCourse("course101"));
-        assertEquals("Course already completed", exception.getMessage());
+        assertEquals("Course already completed: course101", exception.getMessage());
     }
 }
