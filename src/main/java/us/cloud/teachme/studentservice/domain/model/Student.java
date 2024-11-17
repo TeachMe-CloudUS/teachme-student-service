@@ -34,7 +34,7 @@ public class Student {
     }
 
     public Student(String userId, String phoneNumber, SubscriptionPlan plan) {
-        super();
+        this();
 
         this.userId = userId;
         this.phoneNumber = phoneNumber;
@@ -50,8 +50,12 @@ public class Student {
     }
 
     public void completeCourse(String courseId) {
-        if (!completedCourses.contains(courseId)) {
+        if (!enrolledCourses.contains(courseId)) {
             throw new DomainException("Not enrolled in course");
+        }
+
+        if (completedCourses.contains(courseId)) {
+            throw new DomainException("Course already completed");
         }
 
         completedCourses.add(courseId);
