@@ -35,7 +35,7 @@ public class StudentController {
 
     @Operation(summary = "Get all students", description = "Retrieve a list of all registered students")
     @ApiResponse(responseCode = "200", description = "Successfully retrieved list of students")
-    @GetMapping("/")
+    @GetMapping
     public List<StudentDto> getStudents() {
         return studentService.getStudents();
     }
@@ -92,7 +92,7 @@ public class StudentController {
             @ApiResponse(responseCode = "400", description = "Invalid input data"),
             @ApiResponse(responseCode = "409", description = "Student already exists")
     })
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<Void> createStudent(
             @Parameter(description = "Student creation request data")
             @Valid

@@ -52,7 +52,7 @@ class StudentControllerIntegrationTest {
         CreateStudentRequestDto request = new CreateStudentRequestDto("user1", "1234567890", SubscriptionPlan.BASIC);
 
         // Act
-        mockMvc.perform(post("/api/students/")
+        mockMvc.perform(post("/api/students")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isCreated());
@@ -71,7 +71,7 @@ class StudentControllerIntegrationTest {
     void testEnrollStudentInCourse() throws Exception {
         // Arrange: Create and save a student
         CreateStudentRequestDto request = new CreateStudentRequestDto("user2", "0987654321", SubscriptionPlan.BASIC);
-        mockMvc.perform(post("/api/students/")
+        mockMvc.perform(post("/api/students")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isCreated());
@@ -93,7 +93,7 @@ class StudentControllerIntegrationTest {
     void testCompleteCourse() throws Exception {
         // Arrange
         CreateStudentRequestDto request = new CreateStudentRequestDto("user3", "1122334455", SubscriptionPlan.BASIC);
-        mockMvc.perform(post("/api/students/")
+        mockMvc.perform(post("/api/students")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isCreated());
@@ -119,18 +119,18 @@ class StudentControllerIntegrationTest {
         CreateStudentRequestDto student1 = new CreateStudentRequestDto("user4", "5566778899", SubscriptionPlan.BASIC);
         CreateStudentRequestDto student2 = new CreateStudentRequestDto("user5", "9988776655", SubscriptionPlan.PLATINUM);
 
-        mockMvc.perform(post("/api/students/")
+        mockMvc.perform(post("/api/students")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(student1)))
                 .andExpect(status().isCreated());
 
-        mockMvc.perform(post("/api/students/")
+        mockMvc.perform(post("/api/students")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(student2)))
                 .andExpect(status().isCreated());
 
         // Act & Assert
-        mockMvc.perform(get("/api/students/"))
+        mockMvc.perform(get("/api/students"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$[0].userId").value("user4"))

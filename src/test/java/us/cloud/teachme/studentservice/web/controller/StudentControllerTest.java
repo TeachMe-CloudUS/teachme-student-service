@@ -61,7 +61,7 @@ class StudentControllerTest {
         when(studentService.getStudents()).thenReturn(List.of(new StudentDto(mockStudent)));
 
         // Act & Assert
-        mockMvc.perform(get("/api/students/"))
+        mockMvc.perform(get("/api/students"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$[0].id").value("1"))
@@ -145,7 +145,7 @@ class StudentControllerTest {
         doNothing().when(createStudentService).createStudent(any(CreateStudentCommand.class));
 
         // Act & Assert
-        mockMvc.perform(post("/api/students/")
+        mockMvc.perform(post("/api/students")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"userId\":\"user1\", \"phoneNumber\":\"1234567890\", \"plan\":\"BASIC\"}"))
                 .andExpect(status().isCreated());
@@ -157,7 +157,7 @@ class StudentControllerTest {
         doThrow(new StudentAlreadyExistsException("Message")).when(createStudentService).createStudent(any(CreateStudentCommand.class));
 
         // Act & Assert
-        mockMvc.perform(post("/api/students/")
+        mockMvc.perform(post("/api/students")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"userId\":\"user1\", \"phoneNumber\":\"1234567890\", \"plan\":\"BASIC\"}"))
                 .andExpect(status().isConflict())
@@ -167,7 +167,7 @@ class StudentControllerTest {
     @Test
     void testCreateStudent_ValidationError() throws Exception {
         // Act & Assert
-        mockMvc.perform(post("/api/students/")
+        mockMvc.perform(post("/api/students")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"phoneNumber\":\"1234567890\", \"plan\":\"BASIC\"}")) // Missing userId
                 .andExpect(status().isBadRequest())
