@@ -10,14 +10,14 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import us.cloud.teachme.studentservice.application.adapter.CompleteCourseAdapter;
+import us.cloud.teachme.studentservice.application.adapter.CreateStudentAdapter;
+import us.cloud.teachme.studentservice.application.adapter.EnrollmentAdapter;
+import us.cloud.teachme.studentservice.application.adapter.StudentAdapter;
 import us.cloud.teachme.studentservice.application.command.CompleteCourseCommand;
 import us.cloud.teachme.studentservice.application.command.CreateStudentCommand;
 import us.cloud.teachme.studentservice.application.command.EnrollStudentCommand;
 import us.cloud.teachme.studentservice.application.dto.StudentDto;
-import us.cloud.teachme.studentservice.application.service.CompleteCourseService;
-import us.cloud.teachme.studentservice.application.service.CreateStudentService;
-import us.cloud.teachme.studentservice.application.service.EnrollmentService;
-import us.cloud.teachme.studentservice.application.service.StudentService;
 import us.cloud.teachme.studentservice.web.request.CreateStudentRequestDto;
 
 import java.util.List;
@@ -28,10 +28,10 @@ import java.util.List;
 @Tag(name = "Student Management", description = "APIs for managing students of the teachme platform")
 public class StudentController {
 
-    private final StudentService studentService;
-    private final EnrollmentService enrollmentService;
-    private final CompleteCourseService completeCourseService;
-    private final CreateStudentService createStudentService;
+    private final StudentAdapter studentService;
+    private final EnrollmentAdapter enrollmentService;
+    private final CompleteCourseAdapter completeCourseService;
+    private final CreateStudentAdapter createStudentService;
 
     @Operation(summary = "Get all students", description = "Retrieve a list of all registered students")
     @ApiResponse(responseCode = "200", description = "Successfully retrieved list of students")

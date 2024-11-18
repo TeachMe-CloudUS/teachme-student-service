@@ -2,6 +2,7 @@ package us.cloud.teachme.studentservice.application.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import us.cloud.teachme.studentservice.application.adapter.CompleteCourseAdapter;
 import us.cloud.teachme.studentservice.application.command.CompleteCourseCommand;
 import us.cloud.teachme.studentservice.application.port.EventPublisher;
 import us.cloud.teachme.studentservice.application.port.StudentRepository;
@@ -11,12 +12,13 @@ import us.cloud.teachme.studentservice.domain.model.Student;
 
 @Service
 @RequiredArgsConstructor
-public class CompleteCourseService {
+public class CompleteCourseService implements CompleteCourseAdapter {
 
     private final StudentRepository studentRepository;
 
     private final EventPublisher eventPublisher;
 
+    @Override
     public void completeStudentCourse(CompleteCourseCommand command) {
         Student student = studentRepository.findStudentsById(command.studentId())
                 .orElseThrow(() -> new StudentNotFoundException("Student not found: " + command.studentId()));

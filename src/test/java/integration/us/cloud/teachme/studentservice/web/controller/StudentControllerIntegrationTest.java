@@ -9,10 +9,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import us.cloud.teachme.studentservice.StudentServiceApplication;
+import us.cloud.teachme.studentservice.application.adapter.EnrollmentAdapter;
+import us.cloud.teachme.studentservice.application.adapter.StudentAdapter;
 import us.cloud.teachme.studentservice.application.command.EnrollStudentCommand;
 import us.cloud.teachme.studentservice.application.dto.StudentDto;
-import us.cloud.teachme.studentservice.application.service.EnrollmentService;
-import us.cloud.teachme.studentservice.application.service.StudentService;
 import us.cloud.teachme.studentservice.domain.model.SubscriptionPlan;
 import us.cloud.teachme.studentservice.web.request.CreateStudentRequestDto;
 
@@ -31,10 +31,10 @@ class StudentControllerIntegrationTest {
     private MockMvc mockMvc;
 
     @Autowired
-    private StudentService studentService;
+    private StudentAdapter studentService;
 
     @Autowired
-    private EnrollmentService enrollmentService;
+    private EnrollmentAdapter enrollmentService;
 
     @Autowired
     private ObjectMapper objectMapper;
