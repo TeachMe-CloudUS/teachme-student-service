@@ -49,7 +49,7 @@ class StudentControllerIntegrationTest {
     @Test
     void testCreateAndRetrieveStudent() throws Exception {
         // Arrange
-        CreateStudentRequestDto request = new CreateStudentRequestDto("user1", "1234567890", "BASIC");
+        CreateStudentRequestDto request = new CreateStudentRequestDto("user1", "1234567890", SubscriptionPlan.BASIC);
 
         // Act
         mockMvc.perform(post("/api/students")
@@ -70,7 +70,7 @@ class StudentControllerIntegrationTest {
     @Test
     void testEnrollStudentInCourse() throws Exception {
         // Arrange: Create and save a student
-        CreateStudentRequestDto request = new CreateStudentRequestDto("user2", "0987654321", "BASIC");
+        CreateStudentRequestDto request = new CreateStudentRequestDto("user2", "0987654321", SubscriptionPlan.BASIC);
         mockMvc.perform(post("/api/students")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
@@ -92,7 +92,7 @@ class StudentControllerIntegrationTest {
     @Test
     void testCompleteCourse() throws Exception {
         // Arrange
-        CreateStudentRequestDto request = new CreateStudentRequestDto("user3", "1122334455", "BASIC");
+        CreateStudentRequestDto request = new CreateStudentRequestDto("user3", "1122334455", SubscriptionPlan.BASIC);
         mockMvc.perform(post("/api/students")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
@@ -116,8 +116,8 @@ class StudentControllerIntegrationTest {
     @Test
     void testGetStudents() throws Exception {
         // Arrange
-        CreateStudentRequestDto student1 = new CreateStudentRequestDto("user4", "5566778899", "BASIC");
-        CreateStudentRequestDto student2 = new CreateStudentRequestDto("user5", "9988776655", "PLATINUM");
+        CreateStudentRequestDto student1 = new CreateStudentRequestDto("user4", "5566778899", SubscriptionPlan.BASIC);
+        CreateStudentRequestDto student2 = new CreateStudentRequestDto("user5", "9988776655", SubscriptionPlan.PLATINUM);
 
         mockMvc.perform(post("/api/students")
                         .contentType(MediaType.APPLICATION_JSON)

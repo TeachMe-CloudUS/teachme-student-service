@@ -1,5 +1,11 @@
 package us.cloud.teachme.studentservice.web.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +25,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/students")
 @AllArgsConstructor
+@Tag(name = "Student Management", description = "APIs for managing students of the teachme platform")
 public class StudentController {
 
     private final StudentService studentService;
@@ -26,18 +33,34 @@ public class StudentController {
     private final CompleteCourseService completeCourseService;
     private final CreateStudentService createStudentService;
 
+    @Operation(summary = "Get all students", description = "Retrieve a list of all registered students")
+    @ApiResponse(responseCode = "200", description = "Successfully retrieved list of students")
     @GetMapping
     public List<StudentDto> getStudents() {
         return studentService.getStudents();
     }
 
+    @Operation(summary = "Get student by ID", description = "Retrieve a specific student by their ID")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved student"),
+            @ApiResponse(responseCode = "404", description = "Student not found")
+    })
     @GetMapping("/{studentId}")
     public StudentDto getStudentById(@PathVariable String studentId) {
         return studentService.getStudentById(studentId);
     }
 
+    @Operation(summary = "Enroll student in a course", description = "Enroll a student in a specified course")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Successfully enrolled student in the course"),
+            @ApiResponse(responseCode = "404", description = "Student not found")
+    })
     @PostMapping("/{studentId}/courses/{courseId}/enroll")
-    public ResponseEntity<Void> enrollStudent(@PathVariable String studentId, @PathVariable String courseId) {
+    public ResponseEntity<Void> enrollStudent(
+            @Parameter(description = "ID of the student to enroll")
+            @PathVariable String studentId,
+            @Parameter(description = "ID of the course for enrollment")
+            @PathVariable String courseId) {
         enrollmentService.enrollStudentInCourse(
                 new EnrollStudentCommand(studentId, courseId)
         );
@@ -45,8 +68,17 @@ public class StudentController {
         return ResponseEntity.ok().build();
     }
 
+    @Operation(summary = "Complete a course for a student", description = "Mark a course as completed for a student")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Course marked as completed for the student"),
+            @ApiResponse(responseCode = "404", description = "Student not found or course not enrolled")
+    })
     @PostMapping("/{studentId}/courses/{courseId}/complete")
-    public ResponseEntity<Void> completeCourse(@PathVariable String studentId, @PathVariable String courseId) {
+    public ResponseEntity<Void> completeCourse(
+            @Parameter(description = "ID of the student completing the course")
+            @PathVariable String studentId,
+            @Parameter(description = "ID of the course to complete")
+            @PathVariable String courseId) {
         completeCourseService.completeStudentCourse(
                 new CompleteCourseCommand(studentId, courseId)
         );
@@ -54,8 +86,17 @@ public class StudentController {
         return ResponseEntity.ok().build();
     }
 
+    @Operation(summary = "Create a new student", description = "Register a new student with the provided details")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Student created successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid input data"),
+            @ApiResponse(responseCode = "409", description = "Student already exists")
+    })
     @PostMapping
-    public ResponseEntity<Void> createStudent(@RequestBody CreateStudentRequestDto createStudentRequestDto) {
+    public ResponseEntity<Void> createStudent(
+            @Parameter(description = "Student creation request data")
+            @Valid
+            @RequestBody CreateStudentRequestDto createStudentRequestDto) {
         createStudentService.createStudent(new CreateStudentCommand(
                 createStudentRequestDto.getUserId(),
                 createStudentRequestDto.getPhoneNumber(),
