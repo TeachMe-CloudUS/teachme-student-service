@@ -1,6 +1,7 @@
 package us.cloud.teachme.studentservice.application.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import us.cloud.teachme.studentservice.application.adapter.StudentAdapter;
 import us.cloud.teachme.studentservice.application.dto.StudentDto;
@@ -17,6 +18,7 @@ public class StudentService implements StudentAdapter {
     private final StudentRepository studentRepository;
 
     @Override
+    @Cacheable("students")
     public List<StudentDto> getStudents() {
         List<Student> students = studentRepository.findAllStudents();
         return students.stream()
@@ -25,6 +27,7 @@ public class StudentService implements StudentAdapter {
     }
 
     @Override
+    @Cacheable("studentsById")
     public StudentDto getStudentById(String id) {
         Student student = studentRepository.findStudentsById(id).orElse(null);
         return student != null ? new StudentDto(student) : null;
