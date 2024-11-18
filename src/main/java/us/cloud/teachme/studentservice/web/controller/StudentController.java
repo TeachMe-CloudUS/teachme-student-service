@@ -26,7 +26,7 @@ public class StudentController {
     private final CompleteCourseService completeCourseService;
     private final CreateStudentService createStudentService;
 
-    @GetMapping("/")
+    @GetMapping
     public List<StudentDto> getStudents() {
         return studentService.getStudents();
     }
@@ -54,7 +54,7 @@ public class StudentController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<Void> createStudent(@RequestBody CreateStudentRequestDto createStudentRequestDto) {
         createStudentService.createStudent(new CreateStudentCommand(
                 createStudentRequestDto.getUserId(),
