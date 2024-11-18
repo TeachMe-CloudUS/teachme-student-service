@@ -1,6 +1,7 @@
 package us.cloud.teachme.studentservice.application.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import us.cloud.teachme.studentservice.application.adapter.CreateStudentAdapter;
 import us.cloud.teachme.studentservice.application.command.CreateStudentCommand;
@@ -15,10 +16,11 @@ import us.cloud.teachme.studentservice.domain.model.Student;
 public class CreateStudentService implements CreateStudentAdapter {
 
     private final StudentRepository studentRepository;
-
     private final EventPublisher eventPublisher;
+    private final StudentCacheService studentCacheService;
 
     @Override
+    @CacheEvict(value = "studentsList", allEntries = true)
     public void createStudent(CreateStudentCommand command) {
         var maybeStudent = studentRepository.findStudentByUserId(command.userId());
 
@@ -32,7 +34,9 @@ public class CreateStudentService implements CreateStudentAdapter {
                 command.plan()
         );
 
-        studentRepository.saveStudent(student);
+        var persistedStudent = studentRepository.saveStudent(student);
+
+        studentCacheService.cacheStudent(persistedStudent);
 
         eventPublisher.publish(
                 new StudentCreatedEvent(

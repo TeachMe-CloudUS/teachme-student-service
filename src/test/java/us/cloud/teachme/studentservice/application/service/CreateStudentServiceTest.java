@@ -6,6 +6,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import us.cloud.teachme.studentservice.application.command.CreateStudentCommand;
+import us.cloud.teachme.studentservice.application.dto.StudentDto;
 import us.cloud.teachme.studentservice.application.port.EventPublisher;
 import us.cloud.teachme.studentservice.application.port.StudentRepository;
 import us.cloud.teachme.studentservice.domain.event.StudentCreatedEvent;
@@ -15,7 +16,7 @@ import us.cloud.teachme.studentservice.domain.model.SubscriptionPlan;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 class CreateStudentServiceTest {
@@ -25,6 +26,9 @@ class CreateStudentServiceTest {
 
     @Mock
     private EventPublisher eventPublisher;
+
+    @Mock
+    private StudentCacheService studentCacheService;
 
     @InjectMocks
     private CreateStudentService createStudentService;
@@ -45,6 +49,7 @@ class CreateStudentServiceTest {
         Student savedStudent = new Student(userId, phoneNumber, plan);
 
         when(studentRepository.saveStudent(any(Student.class))).thenReturn(savedStudent);
+        when(studentCacheService.cacheStudent(any(Student.class))).thenReturn(new StudentDto(savedStudent));
 
         // Act
         createStudentService.createStudent(command);

@@ -2,10 +2,12 @@ package us.cloud.teachme.studentservice.application.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import us.cloud.teachme.studentservice.application.adapter.CompleteCourseAdapter;
 import us.cloud.teachme.studentservice.application.command.CompleteCourseCommand;
+import us.cloud.teachme.studentservice.application.dto.StudentDto;
 import us.cloud.teachme.studentservice.application.port.EventPublisher;
 import us.cloud.teachme.studentservice.application.port.StudentRepository;
 import us.cloud.teachme.studentservice.domain.event.CourseCompletedEvent;
@@ -14,25 +16,16 @@ import us.cloud.teachme.studentservice.domain.model.Student;
 
 @Service
 @RequiredArgsConstructor
-public class CompleteCourseService implements CompleteCourseAdapter {
+public class StudentCacheService {
 
-    private final StudentRepository studentRepository;
+    @CachePut(value = "students", key = "#student.id")
+    public StudentDto cacheStudent(Student student) {
+        // Method just used to create cache entry for student with the studentId
+        return new StudentDto(student);
+    }
 
-    private final EventPublisher eventPublisher;
-
-    @Override
-    @Caching(evict = {
-            @CacheEvict(value = "student", key = "#command.studentId()"),
-            @CacheEvict(value = "studentList", allEntries = true)
-    })
-    public void completeStudentCourse(CompleteCourseCommand command) {
-        Student student = studentRepository.findStudentsById(command.studentId())
-                .orElseThrow(() -> new StudentNotFoundException("Student not found: " + command.studentId()));
-
-        student.completeCourse(command.courseId());
-
-        studentRepository.saveStudent(student);
-
-        eventPublisher.publish(new CourseCompletedEvent(command.studentId(), command.courseId()));
+    @CacheEvict(value = "students", key = "#student.id")
+    public void clearCache(Student student) {
+        // Method just used to clear cache entry for student with the studentId
     }
 }

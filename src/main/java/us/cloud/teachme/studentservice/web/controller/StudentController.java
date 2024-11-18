@@ -106,6 +106,18 @@ public class StudentController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    @Operation(summary = "Delete a student by ID", description = "Delete a specific student by their ID")
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "Successfully deleted student"),
+            @ApiResponse(responseCode = "404", description = "Student not found")
+    })
+    @DeleteMapping("/{studentId}")
+    public ResponseEntity<Void> deleteStudentById(@PathVariable String studentId) {
+        studentService.deleteStudentById(studentId);
+
+        return ResponseEntity.noContent().build();
+    }
+
     // @Todo: Update Student
 
     // @Todo: Delete Student

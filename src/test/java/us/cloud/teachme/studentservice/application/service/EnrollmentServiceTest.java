@@ -14,7 +14,7 @@ import us.cloud.teachme.studentservice.domain.model.Student;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 class EnrollmentServiceTest {
@@ -24,6 +24,9 @@ class EnrollmentServiceTest {
 
     @Mock
     private EventPublisher eventPublisher;
+
+    @Mock
+    private StudentCacheService studentCacheService;
 
     @InjectMocks
     private EnrollmentService enrollmentService;

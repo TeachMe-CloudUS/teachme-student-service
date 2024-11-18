@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.cache.CacheManager;
+import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import us.cloud.teachme.studentservice.StudentServiceApplication;
@@ -17,6 +19,7 @@ import us.cloud.teachme.studentservice.domain.model.SubscriptionPlan;
 import us.cloud.teachme.studentservice.web.request.CreateStudentRequestDto;
 
 import java.util.List;
+import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -39,11 +42,21 @@ class StudentControllerIntegrationTest {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @Autowired
+    private CacheManager cacheManager;
+
     @BeforeEach
     void setup() {
         studentService.getStudents().forEach(studentDto ->
                 studentService.deleteStudentById(studentDto.getId())
         );
+
+        if (Objects.nonNull(cacheManager.getCache("students"))) {
+            cacheManager.getCache("students").clear();
+        }
+        if (Objects.nonNull(cacheManager.getCache("studentsList"))) {
+            cacheManager.getCache("studentsList").clear();
+        }
     }
 
     @Test
