@@ -13,6 +13,8 @@ import us.cloud.teachme.studentservice.domain.exception.StudentAlreadyExistsExce
 import us.cloud.teachme.studentservice.domain.model.Student;
 import us.cloud.teachme.studentservice.domain.model.SubscriptionPlan;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -38,7 +40,7 @@ class CreateStudentServiceTest {
         String userId = "user-id";
         String phoneNumber = "123-456-7890";
         SubscriptionPlan plan = SubscriptionPlan.PLATINUM;
-        CreateStudentCommand command = new CreateStudentCommand(userId, phoneNumber, plan.name());
+        CreateStudentCommand command = new CreateStudentCommand(userId, phoneNumber, plan);
 
         Student savedStudent = new Student(userId, phoneNumber, plan);
 
@@ -57,10 +59,12 @@ class CreateStudentServiceTest {
         // Arrange
         String userId = "user-id";
         String phoneNumber = "123-456-7890";
-        String plan = "BASIC";
+        SubscriptionPlan plan = SubscriptionPlan.BASIC;
         CreateStudentCommand command = new CreateStudentCommand(userId, phoneNumber, plan);
 
-        when(studentRepository.saveStudent(any(Student.class))).thenReturn(null);
+        Student student = new Student(userId, phoneNumber, plan);
+
+        when(studentRepository.findStudentByUserId(any(String.class))).thenReturn(Optional.of(student));
 
         // Act & Assert
         assertThrows(StudentAlreadyExistsException.class, () -> createStudentService.createStudent(command));

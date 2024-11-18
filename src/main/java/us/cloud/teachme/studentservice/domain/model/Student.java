@@ -3,7 +3,9 @@ package us.cloud.teachme.studentservice.domain.model;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import us.cloud.teachme.studentservice.domain.exception.DomainException;
+import us.cloud.teachme.studentservice.domain.exception.AlreadyEnrolledInCourseException;
+import us.cloud.teachme.studentservice.domain.exception.CourseAlreadyCompletedException;
+import us.cloud.teachme.studentservice.domain.exception.NotEnrolledInCourseException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +45,7 @@ public class Student {
 
     public void enrollInCourse(String courseId) {
         if (enrolledCourses.contains(courseId)) {
-            throw new DomainException("Already enrolled in course");
+            throw new AlreadyEnrolledInCourseException(courseId);
         }
 
         enrolledCourses.add(courseId);
@@ -51,11 +53,11 @@ public class Student {
 
     public void completeCourse(String courseId) {
         if (!enrolledCourses.contains(courseId)) {
-            throw new DomainException("Not enrolled in course");
+            throw new NotEnrolledInCourseException(courseId);
         }
 
         if (completedCourses.contains(courseId)) {
-            throw new DomainException("Course already completed");
+            throw new CourseAlreadyCompletedException(courseId);
         }
 
         completedCourses.add(courseId);

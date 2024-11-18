@@ -1,12 +1,13 @@
 package us.cloud.teachme.studentservice.domain.exception;
 
-public class StudentNotFoundException extends RuntimeException {
+import org.springframework.http.HttpStatus;
+import us.cloud.teachme.studentservice.domain.annotation.HttpStatusMapping;
 
-    public StudentNotFoundException(String message) {
-        super(message);
+@HttpStatusMapping(HttpStatus.NOT_FOUND)
+public class StudentNotFoundException extends DomainException {
+
+    public StudentNotFoundException(String studentId) {
+        super("Student not found with id: " + studentId);
     }
 
-    public StudentNotFoundException() {
-        super();
-    }
 }

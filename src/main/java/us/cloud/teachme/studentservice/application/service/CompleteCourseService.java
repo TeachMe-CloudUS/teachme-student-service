@@ -19,7 +19,7 @@ public class CompleteCourseService {
 
     public void completeStudentCourse(CompleteCourseCommand command) {
         Student student = studentRepository.findStudentsById(command.studentId())
-                .orElseThrow(() -> new StudentNotFoundException(command.studentId()));
+                .orElseThrow(() -> new StudentNotFoundException("Student not found: " + command.studentId()));
 
         student.completeCourse(command.courseId());
 
