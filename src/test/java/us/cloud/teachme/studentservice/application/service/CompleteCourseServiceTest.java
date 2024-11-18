@@ -85,9 +85,7 @@ class CompleteCourseServiceTest {
         doThrow(new DomainException("Not enrolled in course")).when(student).completeCourse(courseId);
 
         // Act & Assert
-        DomainException exception = assertThrows(DomainException.class, () -> {
-            completeCourseService.completeStudentCourse(command);
-        });
+        DomainException exception = assertThrows(DomainException.class, () -> completeCourseService.completeStudentCourse(command));
         assertEquals("Not enrolled in course", exception.getMessage());
 
         verify(eventPublisher, never()).publish(any(CourseCompletedEvent.class));

@@ -65,9 +65,7 @@ class EnrollmentServiceTest {
         when(studentRepository.findStudentsById(studentId)).thenReturn(Optional.empty());
 
         // Act & Assert
-        assertThrows(StudentNotFoundException.class, () -> {
-            enrollmentService.enrollStudentInCourse(command);
-        });
+        assertThrows(StudentNotFoundException.class, () -> enrollmentService.enrollStudentInCourse(command));
 
         verify(eventPublisher, never()).publish(any(StudentEnrollmentEvent.class));
     }
