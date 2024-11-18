@@ -9,14 +9,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import us.cloud.teachme.studentservice.application.adapter.CompleteCourseAdapter;
+import us.cloud.teachme.studentservice.application.adapter.CreateStudentAdapter;
+import us.cloud.teachme.studentservice.application.adapter.EnrollmentAdapter;
+import us.cloud.teachme.studentservice.application.adapter.StudentAdapter;
 import us.cloud.teachme.studentservice.application.command.CompleteCourseCommand;
 import us.cloud.teachme.studentservice.application.command.CreateStudentCommand;
 import us.cloud.teachme.studentservice.application.command.EnrollStudentCommand;
 import us.cloud.teachme.studentservice.application.dto.StudentDto;
-import us.cloud.teachme.studentservice.application.service.CompleteCourseService;
-import us.cloud.teachme.studentservice.application.service.CreateStudentService;
-import us.cloud.teachme.studentservice.application.service.EnrollmentService;
-import us.cloud.teachme.studentservice.application.service.StudentService;
 import us.cloud.teachme.studentservice.domain.exception.StudentAlreadyExistsException;
 import us.cloud.teachme.studentservice.domain.exception.StudentNotFoundException;
 import us.cloud.teachme.studentservice.domain.model.Student;
@@ -25,9 +25,7 @@ import us.cloud.teachme.studentservice.domain.model.SubscriptionPlan;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -41,16 +39,16 @@ class StudentControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private StudentService studentService;
+    private StudentAdapter studentService;
 
     @MockBean
-    private EnrollmentService enrollmentService;
+    private EnrollmentAdapter enrollmentService;
 
     @MockBean
-    private CompleteCourseService completeCourseService;
+    private CompleteCourseAdapter completeCourseService;
 
     @MockBean
-    private CreateStudentService createStudentService;
+    private CreateStudentAdapter createStudentService;
 
     @Test
     void testGetStudents() throws Exception {
