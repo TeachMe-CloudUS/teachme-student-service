@@ -7,6 +7,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import us.cloud.teachme.studentservice.application.dto.StudentDto;
 import us.cloud.teachme.studentservice.application.port.StudentRepository;
+import us.cloud.teachme.studentservice.domain.exception.StudentNotFoundException;
 import us.cloud.teachme.studentservice.domain.model.Student;
 
 import java.util.Arrays;
@@ -77,5 +78,32 @@ class StudentServiceTest {
         // Assert
         assertNull(result);
         verify(studentRepository, times(1)).findStudentsById(studentId);
+    }
+
+    @Test
+    void deleteStudentById_shouldDeleteStudent_whenStudentExists() {
+        // Arrange
+        Student student = new Student("user-id", "123-456-7890", null);
+        when(studentRepository.findStudentsById(student.getId())).thenReturn(Optional.of(student));
+
+        // Act
+        studentService.deleteStudentById(student.getId());
+
+        when(studentRepository.findStudentsById(student.getId())).thenReturn(Optional.empty());
+        StudentDto result = studentService.getStudentById(student.getId());
+
+        // Assert
+        assertNull(result);
+        verify(studentRepository, times(2)).findStudentsById(student.getId());
+    }
+
+    @Test
+    void deleteStudentById_shouldThrowError_whenStudentDoesNotExist() {
+        // Arrange
+        Student student = new Student("user-id", "123-456-7890", null);
+        when(studentRepository.findStudentsById(student.getId())).thenReturn(Optional.empty());
+
+        // Act & Act
+        assertThrows(StudentNotFoundException.class, () -> studentService.deleteStudentById(student.getId()));
     }
 }
