@@ -1,5 +1,8 @@
 package us.cloud.teachme.studentservice.infrastructure.config;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.support.NoOpCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
@@ -15,7 +18,11 @@ import java.time.Duration;
 public class RedisCacheConfig {
 
     @Bean
-    public RedisCacheManager cacheManager(RedisConnectionFactory redisConnectionFactory) {
+    public CacheManager cacheManager(@Value("${teachme.cache.enabled}") String cacheEnabled, RedisConnectionFactory redisConnectionFactory) {
+        if (cacheEnabled.equals("false")) {
+            return new NoOpCacheManager();
+        }
+
         RedisCacheConfiguration cacheConfig = RedisCacheConfiguration.defaultCacheConfig()
                 .entryTtl(Duration.ofMinutes(10))
                 .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer()));
