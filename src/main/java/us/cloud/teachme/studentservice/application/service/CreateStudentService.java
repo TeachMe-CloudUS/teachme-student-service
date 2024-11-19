@@ -5,6 +5,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import us.cloud.teachme.studentservice.application.adapter.CreateStudentAdapter;
 import us.cloud.teachme.studentservice.application.command.CreateStudentCommand;
+import us.cloud.teachme.studentservice.application.dto.StudentDto;
 import us.cloud.teachme.studentservice.application.port.EventPublisher;
 import us.cloud.teachme.studentservice.application.port.StudentRepository;
 import us.cloud.teachme.studentservice.domain.event.StudentCreatedEvent;
@@ -21,7 +22,7 @@ public class CreateStudentService implements CreateStudentAdapter {
 
     @Override
     @CacheEvict(value = "studentsList", allEntries = true)
-    public void createStudent(CreateStudentCommand command) {
+    public StudentDto createStudent(CreateStudentCommand command) {
         var maybeStudent = studentRepository.findStudentByUserId(command.userId());
 
         if (maybeStudent.isPresent()) {
@@ -44,5 +45,7 @@ public class CreateStudentService implements CreateStudentAdapter {
                         command.userId()
                 )
         );
+
+        return new StudentDto(student);
     }
 }

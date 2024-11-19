@@ -93,17 +93,19 @@ public class StudentController {
             @ApiResponse(responseCode = "409", description = "Student already exists")
     })
     @PostMapping
-    public ResponseEntity<Void> createStudent(
+    public ResponseEntity<StudentDto> createStudent(
             @Parameter(description = "Student creation request data")
             @Valid
             @RequestBody CreateStudentRequestDto createStudentRequestDto) {
-        createStudentService.createStudent(new CreateStudentCommand(
+        StudentDto createdStudent = createStudentService.createStudent(new CreateStudentCommand(
                 createStudentRequestDto.getUserId(),
                 createStudentRequestDto.getPhoneNumber(),
                 createStudentRequestDto.getPlan()
         ));
 
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(createdStudent);
     }
 
     @Operation(summary = "Delete a student by ID", description = "Delete a specific student by their ID")

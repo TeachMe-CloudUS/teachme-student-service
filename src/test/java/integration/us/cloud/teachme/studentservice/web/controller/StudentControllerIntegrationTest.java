@@ -22,8 +22,7 @@ import java.util.Objects;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest(classes = {StudentServiceApplication.class})
@@ -148,5 +147,34 @@ class StudentControllerIntegrationTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$[0].userId").value("user4"))
                 .andExpect(jsonPath("$[1].userId").value("user5"));
+    }
+
+    @Test
+    void testDeleteStudent() throws Exception {
+        // Arrange
+        CreateStudentRequestDto request = new CreateStudentRequestDto("user6", "1112223333", SubscriptionPlan.GOLD);
+        mockMvc.perform(post("/api/students")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isCreated());
+
+        List<StudentDto> students = studentService.getStudents();
+        assertThat(students).hasSize(1);
+
+        String studentId = students.get(0).getId();
+
+        // Act
+        mockMvc.perform(delete("/api/students/{studentId}", studentId))
+                .andExpect(status().isNoContent());
+
+        // Assert
+        assertThat(studentService.getStudents()).isEmpty();
+    }
+
+    @Test
+    void testDeleteNonExistentStudent() throws Exception {
+        // Act & Assert
+        mockMvc.perform(delete("/api/students/{studentId}", "non-existent-id"))
+                .andExpect(status().isNotFound());
     }
 }
