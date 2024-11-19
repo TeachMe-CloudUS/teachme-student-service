@@ -2,7 +2,6 @@ package us.cloud.teachme.studentservice.application.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import us.cloud.teachme.studentservice.application.adapter.EnrollmentAdapter;
 import us.cloud.teachme.studentservice.application.command.EnrollStudentCommand;
@@ -21,9 +20,7 @@ public class EnrollmentService implements EnrollmentAdapter {
     private final StudentCacheService studentCacheService;
 
     @Override
-    @Caching(evict = {
-            @CacheEvict(value = "studentList", allEntries = true)
-    })
+    @CacheEvict(value = "studentList", allEntries = true)
     public void enrollStudentInCourse(EnrollStudentCommand command) {
         Student student = studentRepository.findStudentsById(command.studentId())
                 .orElseThrow(() -> new StudentNotFoundException(command.studentId()));
