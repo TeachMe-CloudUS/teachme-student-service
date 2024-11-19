@@ -2,6 +2,7 @@ package us.cloud.teachme.studentservice.application.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import us.cloud.teachme.studentservice.domain.model.Student;
 import us.cloud.teachme.studentservice.domain.model.SubscriptionPlan;
 
@@ -9,6 +10,7 @@ import java.util.List;
 
 @Data
 @Schema(description = "Data Transfer Object representing a student")
+@NoArgsConstructor
 public class StudentDto {
 
     @Schema(description = "Unique identifier of the student", example = "12345")

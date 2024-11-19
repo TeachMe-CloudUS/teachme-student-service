@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.cache.CacheManager;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import us.cloud.teachme.studentservice.StudentServiceApplication;
@@ -17,10 +18,11 @@ import us.cloud.teachme.studentservice.domain.model.SubscriptionPlan;
 import us.cloud.teachme.studentservice.web.request.CreateStudentRequestDto;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest(classes = {StudentServiceApplication.class})
@@ -39,11 +41,21 @@ class StudentControllerIntegrationTest {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @Autowired
+    private CacheManager cacheManager;
+
     @BeforeEach
     void setup() {
         studentService.getStudents().forEach(studentDto ->
                 studentService.deleteStudentById(studentDto.getId())
         );
+
+        Stream.of("students", "studentsList")
+                .forEach(cacheName -> {
+                    if (cacheManager.getCache(cacheName) != null) {
+                        Objects.requireNonNull(cacheManager.getCache(cacheName)).clear();
+                    }
+                });
     }
 
     @Test
@@ -135,5 +147,34 @@ class StudentControllerIntegrationTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$[0].userId").value("user4"))
                 .andExpect(jsonPath("$[1].userId").value("user5"));
+    }
+
+    @Test
+    void testDeleteStudent() throws Exception {
+        // Arrange
+        CreateStudentRequestDto request = new CreateStudentRequestDto("user6", "1112223333", SubscriptionPlan.GOLD);
+        mockMvc.perform(post("/api/students")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isCreated());
+
+        List<StudentDto> students = studentService.getStudents();
+        assertThat(students).hasSize(1);
+
+        String studentId = students.get(0).getId();
+
+        // Act
+        mockMvc.perform(delete("/api/students/{studentId}", studentId))
+                .andExpect(status().isNoContent());
+
+        // Assert
+        assertThat(studentService.getStudents()).isEmpty();
+    }
+
+    @Test
+    void testDeleteNonExistentStudent() throws Exception {
+        // Act & Assert
+        mockMvc.perform(delete("/api/students/{studentId}", "non-existent-id"))
+                .andExpect(status().isNotFound());
     }
 }

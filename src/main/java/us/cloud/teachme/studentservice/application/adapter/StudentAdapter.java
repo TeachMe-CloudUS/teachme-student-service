@@ -8,7 +8,7 @@ public interface StudentAdapter {
 
     List<StudentDto> getStudents();
 
-    StudentDto getStudentById(String id);
+    StudentDto getStudentById(String studentId);
 
-    void deleteStudentById(String id);
+    void deleteStudentById(String studentId);
 }

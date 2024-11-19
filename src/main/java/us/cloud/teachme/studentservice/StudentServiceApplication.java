@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.info.Contact;
 import io.swagger.v3.oas.annotations.info.Info;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 @OpenAPIDefinition(
@@ -15,6 +16,7 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
                 contact = @Contact(name = "API Support", email = "ramnak@alum.us.es")
         )
 )
+@EnableCaching
 @SpringBootApplication
 @EnableMongoRepositories
 public class StudentServiceApplication {

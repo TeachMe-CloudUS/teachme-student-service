@@ -93,17 +93,31 @@ public class StudentController {
             @ApiResponse(responseCode = "409", description = "Student already exists")
     })
     @PostMapping
-    public ResponseEntity<Void> createStudent(
+    public ResponseEntity<StudentDto> createStudent(
             @Parameter(description = "Student creation request data")
             @Valid
             @RequestBody CreateStudentRequestDto createStudentRequestDto) {
-        createStudentService.createStudent(new CreateStudentCommand(
+        StudentDto createdStudent = createStudentService.createStudent(new CreateStudentCommand(
                 createStudentRequestDto.getUserId(),
                 createStudentRequestDto.getPhoneNumber(),
                 createStudentRequestDto.getPlan()
         ));
 
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(createdStudent);
+    }
+
+    @Operation(summary = "Delete a student by ID", description = "Delete a specific student by their ID")
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "Successfully deleted student"),
+            @ApiResponse(responseCode = "404", description = "Student not found")
+    })
+    @DeleteMapping("/{studentId}")
+    public ResponseEntity<Void> deleteStudentById(@PathVariable String studentId) {
+        studentService.deleteStudentById(studentId);
+
+        return ResponseEntity.noContent().build();
     }
 
     // @Todo: Update Student

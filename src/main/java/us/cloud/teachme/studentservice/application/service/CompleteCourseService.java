@@ -1,6 +1,8 @@
 package us.cloud.teachme.studentservice.application.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import us.cloud.teachme.studentservice.application.adapter.CompleteCourseAdapter;
 import us.cloud.teachme.studentservice.application.command.CompleteCourseCommand;
@@ -19,6 +21,10 @@ public class CompleteCourseService implements CompleteCourseAdapter {
     private final EventPublisher eventPublisher;
 
     @Override
+    @Caching(evict = {
+            @CacheEvict(value = "student", key = "#command.studentId()"),
+            @CacheEvict(value = "studentList", allEntries = true)
+    })
     public void completeStudentCourse(CompleteCourseCommand command) {
         Student student = studentRepository.findStudentsById(command.studentId())
                 .orElseThrow(() -> new StudentNotFoundException("Student not found: " + command.studentId()));

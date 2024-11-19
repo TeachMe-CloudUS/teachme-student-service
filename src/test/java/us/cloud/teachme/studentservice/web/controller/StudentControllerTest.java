@@ -140,7 +140,8 @@ class StudentControllerTest {
     @Test
     void testCreateStudent_Success() throws Exception {
         // Arrange
-        doNothing().when(createStudentService).createStudent(any(CreateStudentCommand.class));
+        Student mockStudent = new Student("user1", "1234567890", SubscriptionPlan.BASIC);
+        doReturn(new StudentDto(mockStudent)).when(createStudentService).createStudent(any(CreateStudentCommand.class));
 
         // Act & Assert
         mockMvc.perform(post("/api/students")

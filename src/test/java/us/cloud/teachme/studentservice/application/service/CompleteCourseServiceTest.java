@@ -9,13 +9,14 @@ import us.cloud.teachme.studentservice.application.command.CompleteCourseCommand
 import us.cloud.teachme.studentservice.application.port.EventPublisher;
 import us.cloud.teachme.studentservice.application.port.StudentRepository;
 import us.cloud.teachme.studentservice.domain.event.CourseCompletedEvent;
-import us.cloud.teachme.studentservice.domain.exception.StudentNotFoundException;
 import us.cloud.teachme.studentservice.domain.exception.DomainException;
+import us.cloud.teachme.studentservice.domain.exception.StudentNotFoundException;
 import us.cloud.teachme.studentservice.domain.model.Student;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 class CompleteCourseServiceTest {
@@ -84,9 +85,7 @@ class CompleteCourseServiceTest {
         doThrow(new DomainException("Not enrolled in course")).when(student).completeCourse(courseId);
 
         // Act & Assert
-        DomainException exception = assertThrows(DomainException.class, () -> {
-            completeCourseService.completeStudentCourse(command);
-        });
+        DomainException exception = assertThrows(DomainException.class, () -> completeCourseService.completeStudentCourse(command));
         assertEquals("Not enrolled in course", exception.getMessage());
 
         verify(eventPublisher, never()).publish(any(CourseCompletedEvent.class));
