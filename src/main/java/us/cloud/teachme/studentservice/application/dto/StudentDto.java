@@ -36,8 +36,8 @@ public class StudentDto {
 
     public StudentDto(Student student) {
         this.id = student.getId();
-        this.userId = student.getUserId();
-        this.phoneNumber = student.getPhoneNumber();
+        this.userId = student.getUserId().value();
+        this.phoneNumber = student.getPhoneNumber().value();
         this.plan = student.getPlan();
         this.enrolledCourses = student.getEnrolledCourses();
         this.completedCourses = student.getCompletedCourses();
