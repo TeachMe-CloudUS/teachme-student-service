@@ -53,7 +53,7 @@ class StudentControllerTest {
     @Test
     void testGetStudents() throws Exception {
         // Arrange
-        Student mockStudent = new Student("user1", "1234567890", SubscriptionPlan.BASIC);
+        Student mockStudent = Student.createStudent("user1", "1234567890", SubscriptionPlan.BASIC);
         mockStudent.setId("1");
 
         when(studentService.getStudents()).thenReturn(List.of(new StudentDto(mockStudent)));
@@ -70,7 +70,7 @@ class StudentControllerTest {
     @Test
     void testGetStudentById_Success() throws Exception {
         // Arrange
-        Student mockStudent = new Student("user1", "1234567890", SubscriptionPlan.BASIC);
+        Student mockStudent = Student.createStudent("user1", "1234567890", SubscriptionPlan.BASIC);
         mockStudent.setId("1");
 
         when(studentService.getStudentById("1")).thenReturn(new StudentDto(mockStudent));
@@ -140,7 +140,7 @@ class StudentControllerTest {
     @Test
     void testCreateStudent_Success() throws Exception {
         // Arrange
-        Student mockStudent = new Student("user1", "1234567890", SubscriptionPlan.BASIC);
+        Student mockStudent = Student.createStudent("user1", "1234567890", SubscriptionPlan.BASIC);
         doReturn(new StudentDto(mockStudent)).when(createStudentService).createStudent(any(CreateStudentCommand.class));
 
         // Act & Assert

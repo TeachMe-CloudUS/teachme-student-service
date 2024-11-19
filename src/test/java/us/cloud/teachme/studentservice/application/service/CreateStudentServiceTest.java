@@ -46,7 +46,7 @@ class CreateStudentServiceTest {
         SubscriptionPlan plan = SubscriptionPlan.PLATINUM;
         CreateStudentCommand command = new CreateStudentCommand(userId, phoneNumber, plan);
 
-        Student savedStudent = new Student(userId, phoneNumber, plan);
+        Student savedStudent = Student.createStudent(userId, phoneNumber, plan);
 
         when(studentRepository.saveStudent(any(Student.class))).thenReturn(savedStudent);
         when(studentCacheService.cacheStudent(any(Student.class))).thenReturn(new StudentDto(savedStudent));
@@ -67,7 +67,7 @@ class CreateStudentServiceTest {
         SubscriptionPlan plan = SubscriptionPlan.BASIC;
         CreateStudentCommand command = new CreateStudentCommand(userId, phoneNumber, plan);
 
-        Student student = new Student(userId, phoneNumber, plan);
+        Student student = Student.createStudent(userId, phoneNumber, plan);
 
         when(studentRepository.findStudentByUserId(any(String.class))).thenReturn(Optional.of(student));
 

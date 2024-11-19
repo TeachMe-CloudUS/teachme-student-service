@@ -34,9 +34,9 @@ class StudentServiceTest {
     void getStudents_shouldReturnListOfStudentDtos_whenStudentsExist() {
         // Arrange
         String userId1 = "user-id-1";
-        Student student1 = new Student(userId1, "123-456-7890", null);  // Assume appropriate values for constructor
+        Student student1 = Student.createStudent(userId1, "123-456-7890", null);  // Assume appropriate values for constructor
         String userId2 = "user-id-2";
-        Student student2 = new Student(userId2, "987-654-3210", null);
+        Student student2 = Student.createStudent(userId2, "987-654-3210", null);
         when(studentRepository.findAllStudents()).thenReturn(Arrays.asList(student1, student2));
 
         // Act
@@ -54,7 +54,7 @@ class StudentServiceTest {
     void getStudentById_shouldReturnStudentDto_whenStudentExists() {
         // Arrange
         String userId = "user-id";
-        Student student = new Student(userId, "123-456-7890", null);
+        Student student = Student.createStudent(userId, "123-456-7890", null);
         when(studentRepository.findStudentsById(userId)).thenReturn(Optional.of(student));
 
         // Act
@@ -83,7 +83,7 @@ class StudentServiceTest {
     @Test
     void deleteStudentById_shouldDeleteStudent_whenStudentExists() {
         // Arrange
-        Student student = new Student("user-id", "123-456-7890", null);
+        Student student = Student.createStudent("user-id", "123-456-7890", null);
         when(studentRepository.findStudentsById(student.getId())).thenReturn(Optional.of(student));
 
         // Act
@@ -100,7 +100,7 @@ class StudentServiceTest {
     @Test
     void deleteStudentById_shouldThrowError_whenStudentDoesNotExist() {
         // Arrange
-        Student student = new Student("user-id", "123-456-7890", null);
+        Student student = Student.createStudent("user-id", "123-456-7890", null);
         when(studentRepository.findStudentsById(student.getId())).thenReturn(Optional.empty());
 
         // Act & Act

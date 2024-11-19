@@ -29,7 +29,7 @@ public class CreateStudentService implements CreateStudentAdapter {
             throw new StudentAlreadyExistsException(command.userId());
         }
 
-        Student student = new Student(
+        var student = Student.createStudent(
                 command.userId(),
                 command.phoneNumber(),
                 command.plan()

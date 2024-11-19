@@ -1,7 +1,16 @@
 package us.cloud.teachme.studentservice.domain.model;
 
+import lombok.Getter;
+
+@Getter
 public enum SubscriptionPlan {
-    BASIC,
-    GOLD,
-    PLATINUM,
+    BASIC(5),
+    GOLD(10),
+    PLATINUM(Integer.MAX_VALUE);
+
+    private final int maxCourses;
+
+    SubscriptionPlan(int maxCourses) {
+        this.maxCourses = maxCourses;
+    }
 }
