@@ -42,10 +42,11 @@ jobs:
         with:
           version: 'latest'
 
-      - name: Set Kubernetes context🌐
-        run: |
-          echo "${{ secrets.KUBE_CONFIG }}" > kubeconfig
-          export KUBECONFIG=kubeconfig
+      - name: Set up Azure Kubernetes context 🌐
+        uses: azure/aks-set-context@v4
+        with:
+          resource-group: ${{ secrets.AZURE_RESOURCE_GROUP }}
+          cluster-name: ${{ secrets.AZURE_CLUSTER_NAME }}
 
       - name: Deploy to Kubernetes 🚀
         run: |
