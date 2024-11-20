@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: teachme-student-service
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: teachme-student-service
+  template:
+    metadata:
+      labels:
+        app: teachme-student-service
+    spec:
+      containers:
+        - name: teachme-student-service
+          image: raminkr/teachme-student-service:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SPRING_DATA_MONGODB_URI
+              valueFrom:
+                secretKeyRef:
+                  name: secrets
+                  key: SPRING_DATA_MONGODB_URI
+
+            - name: SPRING_DATA_REDIS_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: secrets
+                  key: SPRING_DATA_REDIS_HOST
+
+            - name: SPRING_DATA_REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secrets
+                  key: SPRING_DATA_REDIS_PASSWORD
+
+
+            - name: SPRING_DATA_REDIS_SSL_ENABLED
+              valueFrom:
+                configMapKeyRef:
+                  name: config
+                  key: SPRING_DATA_REDIS_SSL_ENABLED
+
+            - name: SPRING_DATA_REDIS_CONNECT_TIMEOUT
+              valueFrom:
+                configMapKeyRef:
+                  name: config
+                  key: SPRING_DATA_REDIS_CONNECT_TIMEOUT
+
+            - name: SPRING_DATA_REDIS_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: config
+                  key: SPRING_DATA_REDIS_PORT
+
+            - name: TEACHME_CACHE_ENABLED
+              valueFrom:
+                configMapKeyRef:
+                  name: config
+                  key: TEACHME_CACHE_ENABLED
+
+            - name: SPRING_PROFILES_ACTIVE
+              valueFrom:
+                configMapKeyRef:
+                  name: config
+                  key: SPRING_PROFILES_ACTIVE
