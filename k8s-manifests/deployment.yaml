@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: teachme-student-service
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: teachme-student-service
