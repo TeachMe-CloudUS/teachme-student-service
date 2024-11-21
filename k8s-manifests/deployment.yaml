@@ -14,7 +14,8 @@ spec:
     spec:
       containers:
         - name: teachme-student-service
-          image: raminkr/teachme-student-service:latest
+          image: raminkr/teachme-student-service:IMAGE_TAG
+          imagePullPolicy: Always
           ports:
             - containerPort: 8080
           env:
