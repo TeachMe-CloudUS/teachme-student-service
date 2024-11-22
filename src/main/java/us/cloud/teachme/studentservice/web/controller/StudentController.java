@@ -10,15 +10,14 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import us.cloud.teachme.studentservice.application.adapter.CompleteCourseAdapter;
-import us.cloud.teachme.studentservice.application.adapter.CreateStudentAdapter;
-import us.cloud.teachme.studentservice.application.adapter.EnrollmentAdapter;
-import us.cloud.teachme.studentservice.application.adapter.StudentAdapter;
+import us.cloud.teachme.studentservice.application.adapter.*;
 import us.cloud.teachme.studentservice.application.command.CompleteCourseCommand;
 import us.cloud.teachme.studentservice.application.command.CreateStudentCommand;
 import us.cloud.teachme.studentservice.application.command.EnrollStudentCommand;
 import us.cloud.teachme.studentservice.application.dto.StudentDto;
 import us.cloud.teachme.studentservice.web.request.CreateStudentRequestDto;
+import us.cloud.teachme.studentservice.application.command.UpdateStudentCommand;
+import us.cloud.teachme.studentservice.web.request.UpdateStudentRequestDto;
 
 import java.util.List;
 
@@ -32,6 +31,7 @@ public class StudentController {
     private final EnrollmentAdapter enrollmentService;
     private final CompleteCourseAdapter completeCourseService;
     private final CreateStudentAdapter createStudentService;
+    private final UpdateStudentAdapter updateStudentService;
 
     @Operation(summary = "Get all students", description = "Retrieve a list of all registered students")
     @ApiResponse(responseCode = "200", description = "Successfully retrieved list of students")
@@ -120,7 +120,17 @@ public class StudentController {
         return ResponseEntity.noContent().build();
     }
 
-    // @Todo: Update Student
+    @PutMapping("/{studentId}")
+    public ResponseEntity<StudentDto> updateStudent(@PathVariable String studentId,
+                                                    @RequestBody UpdateStudentRequestDto updateStudentRequestDto) {
+        StudentDto updatedStudent = updateStudentService.updateStudent(
+                new UpdateStudentCommand(
+                        studentId,
+                        updateStudentRequestDto.getPhoneNumber(),
+                        updateStudentRequestDto.getPlan())
+        );
+        return ResponseEntity.ok(updatedStudent);
+    }
 
     // @Todo: Delete Student
 
