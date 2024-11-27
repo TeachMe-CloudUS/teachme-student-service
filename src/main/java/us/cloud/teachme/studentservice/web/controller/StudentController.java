@@ -14,9 +14,9 @@ import us.cloud.teachme.studentservice.application.adapter.*;
 import us.cloud.teachme.studentservice.application.command.CompleteCourseCommand;
 import us.cloud.teachme.studentservice.application.command.CreateStudentCommand;
 import us.cloud.teachme.studentservice.application.command.EnrollStudentCommand;
+import us.cloud.teachme.studentservice.application.command.UpdateStudentCommand;
 import us.cloud.teachme.studentservice.application.dto.StudentDto;
 import us.cloud.teachme.studentservice.web.request.CreateStudentRequestDto;
-import us.cloud.teachme.studentservice.application.command.UpdateStudentCommand;
 import us.cloud.teachme.studentservice.web.request.UpdateStudentRequestDto;
 
 import java.util.List;
@@ -120,7 +120,7 @@ public class StudentController {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/{studentId}")
+    @PostMapping("/{studentId}")
     public ResponseEntity<StudentDto> updateStudent(@PathVariable String studentId,
                                                     @RequestBody UpdateStudentRequestDto updateStudentRequestDto) {
         StudentDto updatedStudent = updateStudentService.updateStudent(
@@ -132,9 +132,11 @@ public class StudentController {
         return ResponseEntity.ok(updatedStudent);
     }
 
-    // @Todo: Delete Student
-
-    // @Todo: GetEnrolledCourses
+    @GetMapping("{studentId}/courses")
+    public ResponseEntity<List<String>> getEnrolledCoursesByStudentId(@PathVariable String studentId) {
+        var enrolledCourses = studentService.getEnrolledCourses(studentId);
+        return ResponseEntity.ok(enrolledCourses);
+    }
 
     // @Todo: GetCompletedCourses
 

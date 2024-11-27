@@ -11,4 +11,7 @@ public interface StudentAdapter {
     StudentDto getStudentById(String studentId);
 
     void deleteStudentById(String studentId);
+
+    List<String> getEnrolledCourses(String studentId);
+
 }

@@ -11,6 +11,7 @@ import us.cloud.teachme.studentservice.application.port.StudentRepository;
 import us.cloud.teachme.studentservice.domain.exception.StudentNotFoundException;
 import us.cloud.teachme.studentservice.domain.model.Student;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,6 +35,12 @@ public class StudentService implements StudentAdapter {
     public StudentDto getStudentById(String studentId) {
         Student student = studentRepository.findStudentsById(studentId).orElse(null);
         return student != null ? new StudentDto(student) : null;
+    }
+
+    @Override
+    public List<String> getEnrolledCourses(String studentId) {
+        Student student = studentRepository.findStudentsById(studentId).orElse(null);
+        return student != null ? student.getEnrolledCourses() : new ArrayList<>();
     }
 
     @Override
