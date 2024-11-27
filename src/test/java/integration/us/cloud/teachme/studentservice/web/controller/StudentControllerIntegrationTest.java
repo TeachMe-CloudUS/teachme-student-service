@@ -14,7 +14,7 @@ import us.cloud.teachme.studentservice.application.adapter.EnrollmentAdapter;
 import us.cloud.teachme.studentservice.application.adapter.StudentAdapter;
 import us.cloud.teachme.studentservice.application.command.EnrollStudentCommand;
 import us.cloud.teachme.studentservice.application.dto.StudentDto;
-import us.cloud.teachme.studentservice.domain.model.SubscriptionPlan;
+import us.cloud.teachme.studentservice.domain.model.valueObject.SubscriptionPlan;
 import us.cloud.teachme.studentservice.web.request.CreateStudentRequestDto;
 
 import java.util.List;

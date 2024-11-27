@@ -10,7 +10,7 @@ import us.cloud.teachme.studentservice.application.dto.StudentDto;
 import us.cloud.teachme.studentservice.application.port.StudentRepository;
 import us.cloud.teachme.studentservice.domain.exception.StudentNotFoundException;
 import us.cloud.teachme.studentservice.domain.model.Student;
-import us.cloud.teachme.studentservice.domain.model.SubscriptionPlan;
+import us.cloud.teachme.studentservice.domain.model.valueObject.SubscriptionPlan;
 
 import java.util.Arrays;
 import java.util.List;

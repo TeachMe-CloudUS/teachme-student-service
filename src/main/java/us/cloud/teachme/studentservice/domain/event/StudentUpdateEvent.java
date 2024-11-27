@@ -2,7 +2,7 @@ package us.cloud.teachme.studentservice.domain.event;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import us.cloud.teachme.studentservice.domain.model.SubscriptionPlan;
+import us.cloud.teachme.studentservice.domain.model.valueObject.SubscriptionPlan;
 
 @Getter
 @AllArgsConstructor

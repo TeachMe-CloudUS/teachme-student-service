@@ -1,6 +1,9 @@
 package us.cloud.teachme.studentservice.domain.model;
 
 import lombok.Data;
+import us.cloud.teachme.studentservice.domain.model.valueObject.Email;
+import us.cloud.teachme.studentservice.domain.model.valueObject.Name;
+import us.cloud.teachme.studentservice.domain.model.valueObject.PhoneNumber;
 
 @Data
 public class ContactInformation {

@@ -1,4 +1,4 @@
-package us.cloud.teachme.studentservice.domain.model;
+package us.cloud.teachme.studentservice.domain.model.valueObject;
 
 public record Language(String language) {
     public Language {

@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import us.cloud.teachme.studentservice.domain.model.SubscriptionPlan;
+import us.cloud.teachme.studentservice.domain.model.valueObject.SubscriptionPlan;
 
 @Data
 @Schema(description = "Data Transfer Object representing the profile information of a Student")

@@ -8,6 +8,7 @@ import us.cloud.teachme.studentservice.domain.exception.AlreadyEnrolledInCourseE
 import us.cloud.teachme.studentservice.domain.exception.CourseAlreadyCompletedException;
 import us.cloud.teachme.studentservice.domain.exception.EnrollmentLimitReachedException;
 import us.cloud.teachme.studentservice.domain.exception.NotEnrolledInCourseException;
+import us.cloud.teachme.studentservice.domain.model.valueObject.SubscriptionPlan;
 
 import static org.junit.jupiter.api.Assertions.*;
 

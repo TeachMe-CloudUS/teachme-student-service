@@ -2,7 +2,7 @@ package us.cloud.teachme.studentservice.infrastructure.persistance.converter;
 
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.convert.WritingConverter;
-import us.cloud.teachme.studentservice.domain.model.UserId;
+import us.cloud.teachme.studentservice.domain.model.valueObject.UserId;
 
 @WritingConverter
 public class UserIdWritingConverter implements Converter<UserId, String> {

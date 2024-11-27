@@ -1,6 +1,8 @@
 package us.cloud.teachme.studentservice.domain.model;
 
 import lombok.Data;
+import us.cloud.teachme.studentservice.domain.model.valueObject.Language;
+import us.cloud.teachme.studentservice.domain.model.valueObject.SubscriptionPlan;
 
 @Data
 public class ProfileInformation {

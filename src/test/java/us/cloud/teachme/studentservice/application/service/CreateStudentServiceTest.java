@@ -11,10 +11,8 @@ import us.cloud.teachme.studentservice.application.port.EventPublisher;
 import us.cloud.teachme.studentservice.application.port.StudentRepository;
 import us.cloud.teachme.studentservice.domain.event.StudentCreatedEvent;
 import us.cloud.teachme.studentservice.domain.exception.StudentAlreadyExistsException;
-import us.cloud.teachme.studentservice.domain.model.ContactInformation;
-import us.cloud.teachme.studentservice.domain.model.ProfileInformation;
 import us.cloud.teachme.studentservice.domain.model.Student;
-import us.cloud.teachme.studentservice.domain.model.SubscriptionPlan;
+import us.cloud.teachme.studentservice.domain.model.valueObject.SubscriptionPlan;
 
 import java.util.Optional;
 

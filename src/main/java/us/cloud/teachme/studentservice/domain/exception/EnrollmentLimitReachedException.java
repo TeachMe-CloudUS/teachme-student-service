@@ -2,7 +2,7 @@ package us.cloud.teachme.studentservice.domain.exception;
 
 import org.springframework.http.HttpStatus;
 import us.cloud.teachme.studentservice.domain.annotation.HttpStatusMapping;
-import us.cloud.teachme.studentservice.domain.model.SubscriptionPlan;
+import us.cloud.teachme.studentservice.domain.model.valueObject.SubscriptionPlan;
 
 @HttpStatusMapping(HttpStatus.FORBIDDEN)
 public class EnrollmentLimitReachedException extends DomainException {

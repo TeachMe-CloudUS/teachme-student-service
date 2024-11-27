@@ -4,7 +4,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import us.cloud.teachme.studentservice.domain.model.Student;
-import us.cloud.teachme.studentservice.domain.model.SubscriptionPlan;
 
 import java.util.List;
 

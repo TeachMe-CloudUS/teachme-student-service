@@ -2,7 +2,7 @@ package us.cloud.teachme.studentservice.infrastructure.persistance.converter;
 
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.convert.WritingConverter;
-import us.cloud.teachme.studentservice.domain.model.PhoneNumber;
+import us.cloud.teachme.studentservice.domain.model.valueObject.PhoneNumber;
 
 @WritingConverter
 public class PhoneNumberWritingConverter implements Converter<PhoneNumber, String> {
