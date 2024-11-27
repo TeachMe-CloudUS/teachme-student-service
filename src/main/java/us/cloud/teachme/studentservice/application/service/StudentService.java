@@ -6,7 +6,6 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import us.cloud.teachme.studentservice.application.adapter.StudentAdapter;
-import us.cloud.teachme.studentservice.application.dto.CourseDetailsCollection;
 import us.cloud.teachme.studentservice.application.dto.StudentDto;
 import us.cloud.teachme.studentservice.application.port.CourseServiceClient;
 import us.cloud.teachme.studentservice.application.port.StudentRepository;
@@ -37,19 +36,6 @@ public class StudentService implements StudentAdapter {
     public StudentDto getStudentById(String studentId) {
         Student student = studentRepository.findStudentsById(studentId).orElse(null);
         return student != null ? new StudentDto(student) : null;
-    }
-
-    @Override
-    public CourseDetailsCollection getEnrolledCourses(String studentId) {
-        Student student = studentRepository.findStudentsById(studentId)
-                .orElseThrow(() -> new StudentNotFoundException(studentId));
-
-        var enrolledCourses = student.getEnrolledCourses();
-        if (enrolledCourses.isEmpty()) {
-            return new CourseDetailsCollection();
-        }
-
-        return courseServiceClient.getCourseDetails(enrolledCourses);
     }
 
     @Override

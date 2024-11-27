@@ -33,6 +33,7 @@ public class StudentController {
     private final CompleteCourseAdapter completeCourseService;
     private final CreateStudentAdapter createStudentService;
     private final UpdateStudentAdapter updateStudentService;
+    private final GetCoursesAdapter getCoursesService;
 
     @Operation(summary = "Get all students", description = "Retrieve a list of all registered students")
     @ApiResponse(responseCode = "200", description = "Successfully retrieved list of students")
@@ -140,9 +141,15 @@ public class StudentController {
     }
 
     @GetMapping("{studentId}/courses")
-    public ResponseEntity<CourseDetailsCollection> getEnrolledCoursesByStudentId(@PathVariable String studentId) {
-        var enrolledCourses = studentService.getEnrolledCourses(studentId);
+    public ResponseEntity<CourseDetailsCollection> getEnrolledCourses(@PathVariable String studentId) {
+        var enrolledCourses = getCoursesService.getEnrolledCourses(studentId);
         return ResponseEntity.ok(enrolledCourses);
+    }
+
+    @GetMapping("{studentId}/completed-courses")
+    public ResponseEntity<CourseDetailsCollection> getCompletedCourses(@PathVariable String studentId) {
+        var completedCourses = getCoursesService.getCompletedCourses(studentId);
+        return ResponseEntity.ok(completedCourses);
     }
 
     // @Todo: GetCompletedCourses
