@@ -20,11 +20,6 @@ import us.cloud.teachme.studentservice.application.dto.StudentDto;
 import us.cloud.teachme.studentservice.web.request.CreateStudentRequestDto;
 import us.cloud.teachme.studentservice.web.request.UpdateStudentRequestDto;
 
-// 1. Modificar el estudiante
-// 2. todos los endpoints que ya tenemos
-// 3. Crear un endpoint api/me (para usar con userId)
-// 4. Llamar a los otros microservicios
-
 import java.util.List;
 
 @RestController
