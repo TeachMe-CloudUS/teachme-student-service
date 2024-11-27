@@ -10,7 +10,6 @@ import us.cloud.teachme.studentservice.application.port.EventPublisher;
 import us.cloud.teachme.studentservice.application.port.StudentRepository;
 import us.cloud.teachme.studentservice.domain.event.StudentCreatedEvent;
 import us.cloud.teachme.studentservice.domain.exception.StudentAlreadyExistsException;
-import us.cloud.teachme.studentservice.domain.model.Student;
 
 @Service
 @RequiredArgsConstructor
@@ -29,11 +28,7 @@ public class CreateStudentService implements CreateStudentAdapter {
             throw new StudentAlreadyExistsException(command.userId());
         }
 
-        var student = Student.createStudent(
-                command.userId(),
-                command.phoneNumber(),
-                command.plan()
-        );
+        var student = StudentFactory.create(command);
 
         var persistedStudent = studentRepository.saveStudent(student);
 

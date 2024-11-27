@@ -19,6 +19,11 @@ import us.cloud.teachme.studentservice.application.dto.StudentDto;
 import us.cloud.teachme.studentservice.web.request.CreateStudentRequestDto;
 import us.cloud.teachme.studentservice.web.request.UpdateStudentRequestDto;
 
+// 1. Modificar el estudiante
+// 2. todos los endpoints que ya tenemos
+// 3. Crear un endpoint api/me (para usar con userId)
+// 4. Llamar a los otros microservicios
+
 import java.util.List;
 
 @RestController
@@ -99,8 +104,14 @@ public class StudentController {
             @RequestBody CreateStudentRequestDto createStudentRequestDto) {
         StudentDto createdStudent = createStudentService.createStudent(new CreateStudentCommand(
                 createStudentRequestDto.getUserId(),
+                createStudentRequestDto.getName(),
+                createStudentRequestDto.getSurname(),
+                createStudentRequestDto.getEmail(),
                 createStudentRequestDto.getPhoneNumber(),
-                createStudentRequestDto.getPlan()
+                createStudentRequestDto.getCountry(),
+                createStudentRequestDto.getPlan(),
+                createStudentRequestDto.getLanguage(),
+                createStudentRequestDto.getBio()
         ));
 
         return ResponseEntity

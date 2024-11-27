@@ -10,7 +10,6 @@ import us.cloud.teachme.studentservice.application.port.EventPublisher;
 import us.cloud.teachme.studentservice.application.port.StudentRepository;
 import us.cloud.teachme.studentservice.domain.event.StudentUpdateEvent;
 import us.cloud.teachme.studentservice.domain.exception.StudentNotFoundException;
-import us.cloud.teachme.studentservice.domain.model.PhoneNumber;
 
 @Service
 @RequiredArgsConstructor
@@ -29,7 +28,7 @@ public class UpdateStudentService implements UpdateStudentAdapter {
 
         student.setPlan(command.plan());
         if (command.phoneNumber() != null) {
-            student.setPhoneNumber(new PhoneNumber(command.phoneNumber()));
+            student.setPhoneNumber(command.phoneNumber());
         }
 
         var updatedStudent = studentRepository.saveStudent(student);
