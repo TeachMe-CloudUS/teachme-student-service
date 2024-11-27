@@ -17,6 +17,7 @@ import us.cloud.teachme.studentservice.application.command.CompleteCourseCommand
 import us.cloud.teachme.studentservice.application.command.CreateStudentCommand;
 import us.cloud.teachme.studentservice.application.command.EnrollStudentCommand;
 import us.cloud.teachme.studentservice.application.dto.StudentDto;
+import us.cloud.teachme.studentservice.application.service.StudentFactory;
 import us.cloud.teachme.studentservice.domain.exception.StudentAlreadyExistsException;
 import us.cloud.teachme.studentservice.domain.exception.StudentNotFoundException;
 import us.cloud.teachme.studentservice.domain.model.Student;
@@ -53,7 +54,7 @@ class StudentControllerTest {
     @Test
     void testGetStudents() throws Exception {
         // Arrange
-        Student mockStudent = Student.createStudent("user1", "1234567890", SubscriptionPlan.BASIC);
+        Student mockStudent = StudentFactory.create(createCommand("user1", SubscriptionPlan.BASIC));
         mockStudent.setId("1");
 
         when(studentService.getStudents()).thenReturn(List.of(new StudentDto(mockStudent)));
@@ -64,13 +65,13 @@ class StudentControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$[0].id").value("1"))
                 .andExpect(jsonPath("$[0].userId").value("user1"))
-                .andExpect(jsonPath("$[0].plan").value("BASIC"));
+                .andExpect(jsonPath("$[0].profileInformation.plan").value("BASIC"));
     }
 
     @Test
     void testGetStudentById_Success() throws Exception {
         // Arrange
-        Student mockStudent = Student.createStudent("user1", "1234567890", SubscriptionPlan.BASIC);
+        Student mockStudent = StudentFactory.create(createCommand("user1", SubscriptionPlan.BASIC));
         mockStudent.setId("1");
 
         when(studentService.getStudentById("1")).thenReturn(new StudentDto(mockStudent));
@@ -81,7 +82,7 @@ class StudentControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id").value("1"))
                 .andExpect(jsonPath("$.userId").value("user1"))
-                .andExpect(jsonPath("$.plan").value("BASIC"));
+                .andExpect(jsonPath("$.profileInformation.plan").value("BASIC"));
     }
 
     @Test
@@ -140,13 +141,15 @@ class StudentControllerTest {
     @Test
     void testCreateStudent_Success() throws Exception {
         // Arrange
-        Student mockStudent = Student.createStudent("user1", "1234567890", SubscriptionPlan.BASIC);
+        Student mockStudent = StudentFactory.create(createCommand("user1", SubscriptionPlan.BASIC));
         doReturn(new StudentDto(mockStudent)).when(createStudentService).createStudent(any(CreateStudentCommand.class));
+
+        String content = "{ \"userId\": \"user1\", \"name\": \"Max\", \"surname\":\"Mustermann\", \"email\": \"max.mustermann@gmail.com\", \"phoneNumber\": \"+584127772190\", \"language\": \"spanish\", \"plan\": \"BASIC\" }";
 
         // Act & Assert
         mockMvc.perform(post("/api/students")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"userId\":\"user1\", \"phoneNumber\":\"1234567890\", \"plan\":\"BASIC\"}"))
+                        .content(content))
                 .andExpect(status().isCreated());
     }
 
@@ -155,10 +158,12 @@ class StudentControllerTest {
         // Arrange
         doThrow(new StudentAlreadyExistsException("Message")).when(createStudentService).createStudent(any(CreateStudentCommand.class));
 
+        String content = "{ \"userId\": \"user1\", \"name\": \"Max\", \"surname\":\"Mustermann\", \"email\": \"max.mustermann@gmail.com\", \"phoneNumber\": \"+584127772190\", \"language\": \"spanish\", \"plan\": \"BASIC\" }";
+
         // Act & Assert
         mockMvc.perform(post("/api/students")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"userId\":\"user1\", \"phoneNumber\":\"1234567890\", \"plan\":\"BASIC\"}"))
+                        .content(content))
                 .andExpect(status().isConflict())
                 .andExpect(jsonPath("$.error").value("409 CONFLICT"));
     }
@@ -171,5 +176,19 @@ class StudentControllerTest {
                         .content("{\"phoneNumber\":\"1234567890\", \"plan\":\"BASIC\"}")) // Missing userId
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.userId").value("User ID is required"));
+    }
+
+    private CreateStudentCommand createCommand(String userId, SubscriptionPlan plan) {
+        return new CreateStudentCommand(
+                userId,
+                "Max",
+                "Mustermann",
+                "test@gmail.com",
+                "123-456-7890",
+                "Germany",
+                plan,
+                "DE",
+                "Heute ist ein guter Tag."
+        );
     }
 }
