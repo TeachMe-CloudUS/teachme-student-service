@@ -7,7 +7,7 @@ services:
     volumes:
       - .:/app
       - ./target:/app/target
-      - /root/.m2:/root/.m2
+      - ~/.m2:/root/.m2
     environment:
       - SPRING_PROFILES_ACTIVE=dev
       - SPRING_DEVTOOLS_RESTART_ENABLED=true
