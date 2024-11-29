@@ -13,7 +13,7 @@ services:
       - SPRING_DEVTOOLS_RESTART_ENABLED=true
     ports:
       - "8080"
-      - "35729:35729"
+      - "35729"
     depends_on:
       - mongo-db
       - redis-cache
