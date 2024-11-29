@@ -13,6 +13,7 @@ ENV MAVEN_OPTS="-XX:+TieredCompilation -XX:TieredStopAtLevel=1"
 WORKDIR /app
 
 COPY pom.xml /app/pom.xml
+RUN mvn dependency:resolve dependency:resolve-plugins -B
 
 COPY . /app
 

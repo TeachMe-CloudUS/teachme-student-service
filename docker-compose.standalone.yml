@@ -1,0 +1,43 @@
+services:
+  student-service:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - .:/app
+      - ./target:/app/target
+      - /root/.m2:/root/.m2
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - SPRING_DEVTOOLS_RESTART_ENABLED=true
+    ports:
+      - "8080:8080"
+      - "35729:35729"
+    depends_on:
+      - mongo-db
+      - redis-cache
+    networks:
+      - student-service-network
+
+  mongo-db:
+    image: mongodb/mongodb-community-server:6.0.12-ubi8
+    container_name: db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=user
+      - MONGO_INITDB_ROOT_PASSWORD=pass
+    ports:
+      - "27017:27017"
+    networks:
+      - student-service-network
+
+  redis-cache:
+    image: redis/redis-stack-server:latest
+    container_name: redis-cache
+    ports:
+      - "6379:6379"
+    networks:
+      - student-service-network
+
+networks:
+  student-service-network:
+    driver: bridge

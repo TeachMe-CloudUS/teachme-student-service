@@ -9,27 +9,44 @@ services:
       - /root/.m2:/root/.m2
     environment:
       - SPRING_PROFILES_ACTIVE=dev
+      - SPRING_DEVTOOLS_RESTART_ENABLED=true
     ports:
-      - "8080:8080"
+      - "8080"
     depends_on:
       - mongo-db
       - redis-cache
+    networks:
+      - teachme-network
+      - proxy-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.teachme-student-service.rule=Host(`teachme-student-service.localhost`)"
+      - "traefik.http.services.teachme-student-service.loadbalancer.server.port=8080"
 
   mongo-db:
     image: mongodb/mongodb-community-server:6.0.12-ubi8
-    container_name: db
     environment:
       - MONGO_INITDB_ROOT_USERNAME=user
       - MONGO_INITDB_ROOT_PASSWORD=pass
     ports:
-      - "27017:27017"
+      - "27017"
+    networks:
+      - teachme-network
+      - proxy-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.teachme-student-service-db.rule=Host(`teachme-student-service.db.localhost`)"
+      - "traefik.http.services.teachme-student-service-db.loadbalancer.server.port=8080"
 
   redis-cache:
     image: redis/redis-stack-server:latest
-    container_name: redis-cache
     ports:
-      - "6379:6379"
+      - "6379"
+    networks:
+      - teachme-network
 
 networks:
   teachme-network:
+    external: true
+  proxy-network:
     external: true
