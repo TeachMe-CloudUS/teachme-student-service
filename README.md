@@ -25,7 +25,7 @@ The project includes Dockerfile.dev and docker-compose.dev.yml files for setting
 2. Start the development container with Docker Compose:
 
 ```bash
-docker-compose -f docker-compose.dev.yml up --build
+docker-compose up --build
 ```
 
 This command will build and start the service along with a MongoDB container if needed for local development.
