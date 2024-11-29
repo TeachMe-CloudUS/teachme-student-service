@@ -1,12 +1,35 @@
 services:
   student-service:
-    build: .
-    networks:
-      - student-service-network
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - .:/app
+      - /app/target
+      - /root/.m2:/root/.m2
     environment:
-      - SPRING_PROFILES_ACTIVE=prod
+      - SPRING_PROFILES_ACTIVE=dev
     ports:
       - "8080:8080"
+    depends_on:
+      - mongo-db
+      - redis-cache
+
+  mongo-db:
+    image: mongodb/mongodb-community-server:6.0.12-ubi8
+    container_name: db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=user
+      - MONGO_INITDB_ROOT_PASSWORD=pass
+    ports:
+      - "27017:27017"
+
+  redis-cache:
+    image: redis/redis-stack-server:latest
+    container_name: redis-cache
+    ports:
+      - "6379:6379"
 
 networks:
-  student-service-network:
+  teachme-network:
+    external: true
