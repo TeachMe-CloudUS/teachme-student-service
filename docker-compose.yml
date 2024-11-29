@@ -3,15 +3,17 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.dev
+    container_name: student-service
     volumes:
       - .:/app
-      - /app/target
+      - ./target:/app/target
       - /root/.m2:/root/.m2
     environment:
       - SPRING_PROFILES_ACTIVE=dev
       - SPRING_DEVTOOLS_RESTART_ENABLED=true
     ports:
       - "8080"
+      - "35729:35729"
     depends_on:
       - mongo-db
       - redis-cache
