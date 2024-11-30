@@ -112,31 +112,11 @@ public class AuthStudentController {
 
     @Operation(summary = "Get all student´s completed courses", description = "Retrieve a list of all courses a student has completed")
     @ApiResponse(responseCode = "200", description = "Successfully retrieved list of completed courses")
-
     @GetMapping("/completed-courses")
     public ResponseEntity<CourseDetailsCollection> getCompletedCourses(@AuthenticationPrincipal Claims claims) {
         var enrolledCourses = getCoursesService.getCompletedCoursesByUserId(claims.getSubject());
         return ResponseEntity.ok(enrolledCourses);
     }
-
-/*
-    @Operation(summary = "Complete a course for a student", description = "Mark a course as completed for a student")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Course marked as completed for the student"),
-            @ApiResponse(responseCode = "404", description = "Student not found or course not enrolled")
-    })
-    @PostMapping("/courses/{courseId}/complete")
-    public ResponseEntity<Void> completeCourse(
-            @AuthenticationPrincipal Claims claims,
-            @Parameter(description = "ID of the course to complete")
-            @PathVariable String courseId) {
-        completeCourseService.completeStudentCourse(
-                new CompleteCourseCommand(claims.getSubject(), courseId)
-        );
-
-        return ResponseEntity.ok().build();
-    }
-*/
 
     // @Todo: GetForumPosts
 
