@@ -3,7 +3,7 @@ name: Build and deploy container app to Azure Web App 🚀
 on:
   push:
     branches:
-      - main
+      - protect-routes
   workflow_dispatch:
 
 jobs:
@@ -24,8 +24,13 @@ jobs:
           username: ${{ secrets.AzureAppService_ContainerUsername_c9c1faba055548ff972c38b5bd89ffe5 }}
           password: ${{ secrets.AzureAppService_ContainerPassword_18a3de3345fb414e9c3238efcf92748d }}
 
+      - name: Set up maven settings ⚙️
+        uses: s4u/maven-settings-action@v3.1.0
+
       - name: Build the Docker image 🎑
-        run: docker build -t raminkr/teachme-student-service:${{ github.sha }} .
+        run: DOCKER_BUILDKIT=1 docker build \
+          --secret id=maven_settings,src=$HOME/.m2/settings.xml \
+          -t raminkr/teachme-student-service:${{ github.sha }} .
 
       - name: Log in to Docker Hub 🔒
         uses: docker/login-action@v2
