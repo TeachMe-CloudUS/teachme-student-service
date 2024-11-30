@@ -8,8 +8,6 @@ import us.cloud.teachme.studentservice.domain.exception.AlreadyEnrolledInCourseE
 import us.cloud.teachme.studentservice.domain.exception.CourseAlreadyCompletedException;
 import us.cloud.teachme.studentservice.domain.exception.EnrollmentLimitReachedException;
 import us.cloud.teachme.studentservice.domain.exception.NotEnrolledInCourseException;
-import us.cloud.teachme.studentservice.domain.model.valueObject.PhoneNumber;
-import us.cloud.teachme.studentservice.domain.model.valueObject.SubscriptionPlan;
 import us.cloud.teachme.studentservice.domain.model.valueObject.UserId;
 
 import java.util.ArrayList;
@@ -65,13 +63,5 @@ public class Student {
         }
 
         completedCourses.add(courseId);
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.contactInformation.setPhoneNumber(new PhoneNumber(phoneNumber));
-    }
-
-    public void setPlan(SubscriptionPlan plan) {
-        this.profileInformation.setPlan(plan);
     }
 }

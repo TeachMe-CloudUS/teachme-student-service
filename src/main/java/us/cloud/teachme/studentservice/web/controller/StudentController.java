@@ -128,16 +128,30 @@ public class StudentController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/{studentId}")
-    public ResponseEntity<StudentDto> updateStudent(@PathVariable String studentId,
-                                                    @RequestBody UpdateStudentRequestDto updateStudentRequestDto) {
-        StudentDto updatedStudent = updateStudentService.updateStudent(
+    @Operation(summary = "Update a student", description = "Update a student with the provided details")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Updated created successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid input data"),
+            @ApiResponse(responseCode = "409", description = "Student could not be updated")
+    })
+    @PutMapping("/{studentId}")
+    public ResponseEntity<Void> updateStudent(@PathVariable String studentId,
+                                              @RequestBody UpdateStudentRequestDto updateStudentRequestDto) {
+        updateStudentService.updateStudent(
                 new UpdateStudentCommand(
                         studentId,
                         updateStudentRequestDto.getPhoneNumber(),
-                        updateStudentRequestDto.getPlan())
+                        updateStudentRequestDto.getPlan(),
+                        updateStudentRequestDto.getName(),
+                        updateStudentRequestDto.getSurname(),
+                        updateStudentRequestDto.getEmail(),
+                        updateStudentRequestDto.getCountry(),
+                        updateStudentRequestDto.getLanguage(),
+                        updateStudentRequestDto.getBio()
+                )
         );
-        return ResponseEntity.ok(updatedStudent);
+
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("{studentId}/courses")

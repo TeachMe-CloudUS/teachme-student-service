@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.*;
 import us.cloud.teachme.studentservice.application.adapter.*;
 import us.cloud.teachme.studentservice.application.command.CompleteMyCourseCommand;
 import us.cloud.teachme.studentservice.application.command.EnrollMeInCourseCommand;
+import us.cloud.teachme.studentservice.application.command.UpdateMeCommand;
 import us.cloud.teachme.studentservice.application.dto.StudentDto;
+import us.cloud.teachme.studentservice.web.request.UpdateStudentRequestDto;
 
 @RestController
 @RequestMapping("/api/students/me")
@@ -71,19 +73,32 @@ public class AuthStudentController {
 
         return ResponseEntity.ok().build();
     }
-  /*
-    @PostMapping
-    public ResponseEntity<StudentDto> updateStudent(@AuthenticationPrincipal Claims claims,
-                                                    @RequestBody UpdateStudentRequestDto updateStudentRequestDto) {
-        StudentDto updatedStudent = updateStudentService.updateStudent(
+
+    @Operation(summary = "Update student", description = "Update student with the provided details")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Updated created successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid input data"),
+            @ApiResponse(responseCode = "409", description = "Student could not be updated")
+    })
+    @PutMapping
+    public ResponseEntity<Void> updateStudent(@AuthenticationPrincipal Claims claims,
+                                              @RequestBody UpdateStudentRequestDto updateStudentRequestDto) {
+        updateStudentService.updateStudent(
                 new UpdateMeCommand(
                         claims.getSubject(),
                         updateStudentRequestDto.getPhoneNumber(),
-                        updateStudentRequestDto.getPlan())
+                        updateStudentRequestDto.getPlan(),
+                        updateStudentRequestDto.getName(),
+                        updateStudentRequestDto.getSurname(),
+                        updateStudentRequestDto.getEmail(),
+                        updateStudentRequestDto.getCountry(),
+                        updateStudentRequestDto.getLanguage(),
+                        updateStudentRequestDto.getBio()
+                )
         );
-        return ResponseEntity.ok(updatedStudent);
+
+        return ResponseEntity.noContent().build();
     }
-    */
 
 /*
     @GetMapping("/courses")
