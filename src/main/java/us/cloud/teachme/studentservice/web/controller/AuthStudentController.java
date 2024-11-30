@@ -1,13 +1,22 @@
 package us.cloud.teachme.studentservice.web.controller;
 
+import io.jsonwebtoken.Claims;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
 import us.cloud.teachme.studentservice.application.adapter.*;
+import us.cloud.teachme.studentservice.application.command.CompleteMyCourseCommand;
+import us.cloud.teachme.studentservice.application.command.EnrollMeInCourseCommand;
+import us.cloud.teachme.studentservice.application.dto.StudentDto;
 
 @RestController
-@RequestMapping("/api/me")
+@RequestMapping("/api/students/me")
 @AllArgsConstructor
 @Tag(name = "Authenticated Student Management", description = "APIs for managing an authenticated student of the teachme platform")
 public class AuthStudentController {
@@ -18,7 +27,17 @@ public class AuthStudentController {
     private final CreateStudentAdapter createStudentService;
     private final UpdateStudentAdapter updateStudentService;
 
-/*
+    @Operation(summary = "Get student by UserId", description = "Retrieve a specific student by their UserId")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved student"),
+            @ApiResponse(responseCode = "404", description = "Student not found")
+    })
+    @GetMapping
+    public ResponseEntity<StudentDto> getStudent(@AuthenticationPrincipal Claims claims) {
+        var student = studentService.getStudentByUserId(claims.getSubject());
+        return ResponseEntity.ok(student);
+    }
+
     @Operation(summary = "Enroll student in a course", description = "Enroll a student in a specified course")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Successfully enrolled student in the course"),
@@ -30,14 +49,12 @@ public class AuthStudentController {
             @Parameter(description = "ID of the course for enrollment")
             @PathVariable String courseId) {
         enrollmentService.enrollStudentInCourse(
-                new EnrollStudentCommand(claims.getSubject(), courseId)
+                new EnrollMeInCourseCommand(claims.getSubject(), courseId)
         );
 
         return ResponseEntity.ok().build();
     }
-*/
 
-/*
     @Operation(summary = "Complete a course for a student", description = "Mark a course as completed for a student")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Course marked as completed for the student"),
@@ -49,26 +66,24 @@ public class AuthStudentController {
             @Parameter(description = "ID of the course to complete")
             @PathVariable String courseId) {
         completeCourseService.completeStudentCourse(
-                new CompleteCourseCommand(claims.getSubject(), courseId)
+                new CompleteMyCourseCommand(claims.getSubject(), courseId)
         );
 
         return ResponseEntity.ok().build();
     }
-*/
-
-/*
+  /*
     @PostMapping
     public ResponseEntity<StudentDto> updateStudent(@AuthenticationPrincipal Claims claims,
                                                     @RequestBody UpdateStudentRequestDto updateStudentRequestDto) {
         StudentDto updatedStudent = updateStudentService.updateStudent(
-                new UpdateStudentCommand(
+                new UpdateMeCommand(
                         claims.getSubject(),
                         updateStudentRequestDto.getPhoneNumber(),
                         updateStudentRequestDto.getPlan())
         );
         return ResponseEntity.ok(updatedStudent);
     }
-*/
+    */
 
 /*
     @GetMapping("/courses")

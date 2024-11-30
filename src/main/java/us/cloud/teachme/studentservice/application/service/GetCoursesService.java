@@ -18,7 +18,7 @@ public class GetCoursesService implements GetCoursesAdapter {
 
     @Override
     public CourseDetailsCollection getEnrolledCourses(String studentId) {
-        Student student = studentRepository.findStudentsById(studentId)
+        Student student = studentRepository.findStudentById(studentId)
                 .orElseThrow(() -> new StudentNotFoundException(studentId));
 
         var enrolledCourses = student.getEnrolledCourses();
@@ -31,7 +31,7 @@ public class GetCoursesService implements GetCoursesAdapter {
 
     @Override
     public CourseDetailsCollection getCompletedCourses(String studentId) {
-        Student student = studentRepository.findStudentsById(studentId)
+        Student student = studentRepository.findStudentById(studentId)
                 .orElseThrow(() -> new StudentNotFoundException(studentId));
 
         var enrolledCourses = student.getCompletedCourses();

@@ -43,7 +43,7 @@ class CompleteCourseServiceTest {
         CompleteCourseCommand command = new CompleteCourseCommand(studentId, courseId);
 
         Student student = mock(Student.class);
-        when(studentRepository.findStudentsById(studentId)).thenReturn(Optional.of(student));
+        when(studentRepository.findStudentById(studentId)).thenReturn(Optional.of(student));
 
         // Simulate successful course completion
         doNothing().when(student).completeCourse(courseId);
@@ -63,7 +63,7 @@ class CompleteCourseServiceTest {
         String courseId = "course101";
         CompleteCourseCommand command = new CompleteCourseCommand(studentId, courseId);
 
-        when(studentRepository.findStudentsById(studentId)).thenReturn(Optional.empty());
+        when(studentRepository.findStudentById(studentId)).thenReturn(Optional.empty());
 
         // Act & Assert
         assertThrows(StudentNotFoundException.class, () -> completeCourseService.completeStudentCourse(command));
@@ -79,7 +79,7 @@ class CompleteCourseServiceTest {
         CompleteCourseCommand command = new CompleteCourseCommand(studentId, courseId);
 
         Student student = mock(Student.class);
-        when(studentRepository.findStudentsById(studentId)).thenReturn(Optional.of(student));
+        when(studentRepository.findStudentById(studentId)).thenReturn(Optional.of(student));
 
         // Simulate "Not enrolled in course" exception
         doThrow(new DomainException("Not enrolled in course")).when(student).completeCourse(courseId);
@@ -99,7 +99,7 @@ class CompleteCourseServiceTest {
         CompleteCourseCommand command = new CompleteCourseCommand(studentId, courseId);
 
         Student student = mock(Student.class);
-        when(studentRepository.findStudentsById(studentId)).thenReturn(Optional.of(student));
+        when(studentRepository.findStudentById(studentId)).thenReturn(Optional.of(student));
 
         // Simulate "Course already completed" exception
         doThrow(new DomainException("Course already completed")).when(student).completeCourse(courseId);

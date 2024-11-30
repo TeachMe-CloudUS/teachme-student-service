@@ -44,13 +44,13 @@ class EnrollmentServiceTest {
         EnrollStudentCommand command = new EnrollStudentCommand(studentId, courseId);
 
         Student student = mock(Student.class);
-        when(studentRepository.findStudentsById(studentId)).thenReturn(Optional.of(student));
+        when(studentRepository.findStudentById(studentId)).thenReturn(Optional.of(student));
 
         // Act
         enrollmentService.enrollStudentInCourse(command);
 
         // Assert
-        verify(studentRepository).findStudentsById(studentId);
+        verify(studentRepository).findStudentById(studentId);
         verify(student).enrollInCourse(courseId);
         verify(eventPublisher).publish(any(StudentEnrollmentEvent.class));
     }
@@ -62,7 +62,7 @@ class EnrollmentServiceTest {
         String courseId = "course101";
         EnrollStudentCommand command = new EnrollStudentCommand(studentId, courseId);
 
-        when(studentRepository.findStudentsById(studentId)).thenReturn(Optional.empty());
+        when(studentRepository.findStudentById(studentId)).thenReturn(Optional.empty());
 
         // Act & Assert
         assertThrows(StudentNotFoundException.class, () -> enrollmentService.enrollStudentInCourse(command));

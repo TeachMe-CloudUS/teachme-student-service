@@ -10,5 +10,7 @@ public interface StudentAdapter {
 
     StudentDto getStudentById(String studentId);
 
+    StudentDto getStudentByUserId(String userId);
+
     void deleteStudentById(String studentId);
 }

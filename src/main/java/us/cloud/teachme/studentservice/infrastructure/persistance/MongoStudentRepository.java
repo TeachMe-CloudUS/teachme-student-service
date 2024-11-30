@@ -17,7 +17,7 @@ public interface MongoStudentRepository extends MongoRepository<Student, String>
     }
 
     @Override
-    default Optional<Student> findStudentsById(String id) {
+    default Optional<Student> findStudentById(String id) {
         return findById(id);
     }
 

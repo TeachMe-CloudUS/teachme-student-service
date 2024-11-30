@@ -22,7 +22,7 @@ public class UpdateStudentService implements UpdateStudentAdapter {
     @Override
     @CacheEvict(value = "studentsList", allEntries = true)
     public StudentDto updateStudent(UpdateStudentCommand command) {
-        var student = studentRepository.findStudentsById(command.studentId()).orElseThrow(
+        var student = studentRepository.findStudentById(command.studentId()).orElseThrow(
                 () -> new StudentNotFoundException(command.studentId())
         );
 
