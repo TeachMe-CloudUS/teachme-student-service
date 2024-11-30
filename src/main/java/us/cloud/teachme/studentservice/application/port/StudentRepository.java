@@ -9,7 +9,7 @@ public interface StudentRepository {
 
     List<Student> findAllStudents();
 
-    Optional<Student> findStudentsById(String id);
+    Optional<Student> findStudentById(String id);
 
     Optional<Student> findStudentByUserId(String userId);
 

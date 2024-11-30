@@ -12,7 +12,7 @@ import us.cloud.teachme.studentservice.application.port.StudentRepository;
 import us.cloud.teachme.studentservice.domain.event.StudentCreatedEvent;
 import us.cloud.teachme.studentservice.domain.exception.StudentAlreadyExistsException;
 import us.cloud.teachme.studentservice.domain.model.Student;
-import us.cloud.teachme.studentservice.domain.model.SubscriptionPlan;
+import us.cloud.teachme.studentservice.domain.model.valueObject.SubscriptionPlan;
 
 import java.util.Optional;
 
@@ -44,9 +44,20 @@ class CreateStudentServiceTest {
         String userId = "user-id";
         String phoneNumber = "123-456-7890";
         SubscriptionPlan plan = SubscriptionPlan.PLATINUM;
-        CreateStudentCommand command = new CreateStudentCommand(userId, phoneNumber, plan);
 
-        Student savedStudent = Student.createStudent(userId, phoneNumber, plan);
+        CreateStudentCommand command = new CreateStudentCommand(
+                userId,
+                "Max",
+                "Mustermann",
+                "test@gmail.com",
+                phoneNumber,
+                "Germany",
+                plan,
+                "DE",
+                "Heute ist ein guter Tag."
+        );
+
+        var savedStudent = StudentFactory.create(command);
 
         when(studentRepository.saveStudent(any(Student.class))).thenReturn(savedStudent);
         when(studentCacheService.cacheStudent(any(Student.class))).thenReturn(new StudentDto(savedStudent));
@@ -65,9 +76,20 @@ class CreateStudentServiceTest {
         String userId = "user-id";
         String phoneNumber = "123-456-7890";
         SubscriptionPlan plan = SubscriptionPlan.BASIC;
-        CreateStudentCommand command = new CreateStudentCommand(userId, phoneNumber, plan);
 
-        Student student = Student.createStudent(userId, phoneNumber, plan);
+        CreateStudentCommand command = new CreateStudentCommand(
+                userId,
+                "Max",
+                "Mustermann",
+                "test@gmail.com",
+                phoneNumber,
+                "Germany",
+                plan,
+                "DE",
+                "Heute ist ein guter Tag."
+        );
+
+        Student student = StudentFactory.create(command);
 
         when(studentRepository.findStudentByUserId(any(String.class))).thenReturn(Optional.of(student));
 

@@ -2,10 +2,13 @@ package us.cloud.teachme.studentservice.domain.model;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import us.cloud.teachme.studentservice.application.command.CreateStudentCommand;
+import us.cloud.teachme.studentservice.application.service.StudentFactory;
 import us.cloud.teachme.studentservice.domain.exception.AlreadyEnrolledInCourseException;
 import us.cloud.teachme.studentservice.domain.exception.CourseAlreadyCompletedException;
 import us.cloud.teachme.studentservice.domain.exception.EnrollmentLimitReachedException;
 import us.cloud.teachme.studentservice.domain.exception.NotEnrolledInCourseException;
+import us.cloud.teachme.studentservice.domain.model.valueObject.SubscriptionPlan;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -15,7 +18,7 @@ class StudentTest {
 
     @BeforeEach
     void setUp() {
-        student = Student.createStudent("user123", "+1234567890", SubscriptionPlan.BASIC);
+        student = StudentFactory.create(createCommand("user123", SubscriptionPlan.BASIC));
     }
 
     @Test
@@ -102,7 +105,7 @@ class StudentTest {
     @Test
     void shouldAllowMoreEnrollmentsForPremiumPlan() {
         // Arrange
-        student = Student.createStudent("user456", "+9876543210", SubscriptionPlan.PLATINUM);
+        student = StudentFactory.create(createCommand("user456", SubscriptionPlan.PLATINUM));
 
         // Act
         for (int i = 1; i <= 10; i++) {
@@ -121,5 +124,19 @@ class StudentTest {
         assertNotNull(student.getCompletedCourses(), "Completed courses list should not be null");
         assertTrue(student.getEnrolledCourses().isEmpty(), "Enrolled courses list should be empty on creation");
         assertTrue(student.getCompletedCourses().isEmpty(), "Completed courses list should be empty on creation");
+    }
+
+    private CreateStudentCommand createCommand(String userId, SubscriptionPlan plan) {
+        return new CreateStudentCommand(
+                userId,
+                "Max",
+                "Mustermann",
+                "test@gmail.com",
+                "123-456-7890",
+                "Germany",
+                plan,
+                "DE",
+                "Heute ist ein guter Tag."
+        );
     }
 }

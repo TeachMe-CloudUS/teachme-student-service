@@ -5,10 +5,12 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import us.cloud.teachme.studentservice.application.command.CreateStudentCommand;
 import us.cloud.teachme.studentservice.application.dto.StudentDto;
 import us.cloud.teachme.studentservice.application.port.StudentRepository;
 import us.cloud.teachme.studentservice.domain.exception.StudentNotFoundException;
 import us.cloud.teachme.studentservice.domain.model.Student;
+import us.cloud.teachme.studentservice.domain.model.valueObject.SubscriptionPlan;
 
 import java.util.Arrays;
 import java.util.List;
@@ -30,13 +32,25 @@ class StudentServiceTest {
         MockitoAnnotations.openMocks(this);
     }
 
+    private CreateStudentCommand createCommand(String userId) {
+        return new CreateStudentCommand(
+                userId,
+                "Max",
+                "Mustermann",
+                "test@gmail.com",
+                "123-456-7890",
+                "Germany",
+                SubscriptionPlan.BASIC,
+                "DE",
+                "Heute ist ein guter Tag."
+        );
+    }
+
     @Test
     void getStudents_shouldReturnListOfStudentDtos_whenStudentsExist() {
         // Arrange
-        String userId1 = "user-id-1";
-        Student student1 = Student.createStudent(userId1, "123-456-7890", null);  // Assume appropriate values for constructor
-        String userId2 = "user-id-2";
-        Student student2 = Student.createStudent(userId2, "987-654-3210", null);
+        Student student1 = StudentFactory.create(createCommand("user-id-1"));
+        Student student2 = StudentFactory.create(createCommand("user-id-2"));
         when(studentRepository.findAllStudents()).thenReturn(Arrays.asList(student1, student2));
 
         // Act
@@ -45,8 +59,8 @@ class StudentServiceTest {
         // Assert
         assertNotNull(result);
         assertEquals(2, result.size());
-        assertEquals(userId1, result.get(0).getUserId());
-        assertEquals(userId2, result.get(1).getUserId());
+        assertEquals("user-id-1", result.get(0).getUserId());
+        assertEquals("user-id-2", result.get(1).getUserId());
         verify(studentRepository, times(1)).findAllStudents();
     }
 
@@ -54,8 +68,8 @@ class StudentServiceTest {
     void getStudentById_shouldReturnStudentDto_whenStudentExists() {
         // Arrange
         String userId = "user-id";
-        Student student = Student.createStudent(userId, "123-456-7890", null);
-        when(studentRepository.findStudentsById(userId)).thenReturn(Optional.of(student));
+        Student student = StudentFactory.create(createCommand(userId));
+        when(studentRepository.findStudentById(userId)).thenReturn(Optional.of(student));
 
         // Act
         StudentDto result = studentService.getStudentById(userId);
@@ -63,45 +77,43 @@ class StudentServiceTest {
         // Assert
         assertNotNull(result);
         assertEquals(userId, result.getUserId());
-        verify(studentRepository, times(1)).findStudentsById(userId);
+        verify(studentRepository, times(1)).findStudentById(userId);
     }
 
     @Test
-    void getStudentById_shouldReturnNull_whenStudentDoesNotExist() {
+    void getStudentById_shouldThrowStudentNotFoundException_whenStudentDoesNotExist() {
         // Arrange
         String studentId = "nonexistent";
-        when(studentRepository.findStudentsById(studentId)).thenReturn(Optional.empty());
+        when(studentRepository.findStudentById(studentId)).thenReturn(Optional.empty());
 
         // Act
-        StudentDto result = studentService.getStudentById(studentId);
+        assertThrows(StudentNotFoundException.class, () -> studentService.getStudentById(studentId));
 
         // Assert
-        assertNull(result);
-        verify(studentRepository, times(1)).findStudentsById(studentId);
+        verify(studentRepository, times(1)).findStudentById(studentId);
     }
 
     @Test
     void deleteStudentById_shouldDeleteStudent_whenStudentExists() {
         // Arrange
-        Student student = Student.createStudent("user-id", "123-456-7890", null);
-        when(studentRepository.findStudentsById(student.getId())).thenReturn(Optional.of(student));
+        Student student = StudentFactory.create(createCommand("user-id"));
+        when(studentRepository.findStudentById(student.getId())).thenReturn(Optional.of(student));
 
         // Act
         studentService.deleteStudentById(student.getId());
 
-        when(studentRepository.findStudentsById(student.getId())).thenReturn(Optional.empty());
-        StudentDto result = studentService.getStudentById(student.getId());
+        when(studentRepository.findStudentById(student.getId())).thenReturn(Optional.empty());
+        assertThrows(StudentNotFoundException.class, () -> studentService.deleteStudentById(student.getId()));
 
         // Assert
-        assertNull(result);
-        verify(studentRepository, times(2)).findStudentsById(student.getId());
+        verify(studentRepository, times(2)).findStudentById(student.getId());
     }
 
     @Test
     void deleteStudentById_shouldThrowError_whenStudentDoesNotExist() {
         // Arrange
-        Student student = Student.createStudent("user-id", "123-456-7890", null);
-        when(studentRepository.findStudentsById(student.getId())).thenReturn(Optional.empty());
+        Student student = StudentFactory.create(createCommand("user-id"));
+        when(studentRepository.findStudentById(student.getId())).thenReturn(Optional.empty());
 
         // Act & Act
         assertThrows(StudentNotFoundException.class, () -> studentService.deleteStudentById(student.getId()));

@@ -4,7 +4,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import us.cloud.teachme.studentservice.domain.model.Student;
-import us.cloud.teachme.studentservice.domain.model.SubscriptionPlan;
 
 import java.util.List;
 
@@ -19,11 +18,11 @@ public class StudentDto {
     @Schema(description = "User ID of the student", example = "user123")
     private String userId;
 
-    @Schema(description = "Phone number of the student", example = "1234567890")
-    private String phoneNumber;
+    @Schema(description = "Contact information")
+    private ContactInformationDto contactInformation;
 
-    @Schema(description = "Subscription plan of the student", example = "BASIC", allowableValues = {"BASIC", "PREMIUM"})
-    private SubscriptionPlan plan;
+    @Schema(description = "Profile information")
+    private ProfileInformationDto profileInformation;
 
     @Schema(description = "List of enrolled course IDs", example = "[\"course1\", \"course2\"]")
     private List<String> enrolledCourses;
@@ -37,8 +36,19 @@ public class StudentDto {
     public StudentDto(Student student) {
         this.id = student.getId();
         this.userId = student.getUserId().value();
-        this.phoneNumber = student.getPhoneNumber().value();
-        this.plan = student.getPlan();
+        this.contactInformation = new ContactInformationDto(
+                student.getContactInformation().getName().name(),
+                student.getContactInformation().getName().surname(),
+                student.getContactInformation().getEmail().email(),
+                student.getContactInformation().getPhoneNumber().value(),
+                student.getContactInformation().getCountry()
+        );
+        this.profileInformation = new ProfileInformationDto(
+                student.getProfileInformation().getPlan(),
+                student.getProfileInformation().getLanguage().language(),
+                student.getProfileInformation().getBio()
+        );
+
         this.enrolledCourses = student.getEnrolledCourses();
         this.completedCourses = student.getCompletedCourses();
         this.forumPosts = student.getForumPosts();

@@ -12,11 +12,13 @@ public class CourseCompletedEvent extends DomainEvent {
     private static final String EVENT_NAME = "course.completed";
 
     private final String studentId;
+    private final String userId;
     private final String courseId;
     private final LocalDateTime enrollmentDate;
 
-    public CourseCompletedEvent(String studentId, String courseId) {
+    public CourseCompletedEvent(String studentId, String userId, String courseId) {
         this.studentId = studentId;
+        this.userId = userId;
         this.courseId = courseId;
         this.enrollmentDate = LocalDateTime.now();
     }

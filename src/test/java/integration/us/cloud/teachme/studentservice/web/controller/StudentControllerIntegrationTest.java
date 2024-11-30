@@ -14,7 +14,7 @@ import us.cloud.teachme.studentservice.application.adapter.EnrollmentAdapter;
 import us.cloud.teachme.studentservice.application.adapter.StudentAdapter;
 import us.cloud.teachme.studentservice.application.command.EnrollStudentCommand;
 import us.cloud.teachme.studentservice.application.dto.StudentDto;
-import us.cloud.teachme.studentservice.domain.model.SubscriptionPlan;
+import us.cloud.teachme.studentservice.domain.model.valueObject.SubscriptionPlan;
 import us.cloud.teachme.studentservice.web.request.CreateStudentRequestDto;
 
 import java.util.List;
@@ -61,7 +61,7 @@ class StudentControllerIntegrationTest {
     @Test
     void testCreateAndRetrieveStudent() throws Exception {
         // Arrange
-        CreateStudentRequestDto request = new CreateStudentRequestDto("user1", "1234567890", SubscriptionPlan.BASIC);
+        CreateStudentRequestDto request = createStudentDto("user1", SubscriptionPlan.BASIC);
 
         // Act
         mockMvc.perform(post("/api/students")
@@ -75,14 +75,14 @@ class StudentControllerIntegrationTest {
 
         StudentDto createdStudent = students.get(0);
         assertThat(createdStudent.getUserId()).isEqualTo("user1");
-        assertThat(createdStudent.getPhoneNumber()).isEqualTo("1234567890");
-        assertThat(createdStudent.getPlan()).isEqualTo(SubscriptionPlan.BASIC);
+        assertThat(createdStudent.getContactInformation().getPhoneNumber()).isEqualTo("1234567890");
+        assertThat(createdStudent.getProfileInformation().getPlan()).isEqualTo(SubscriptionPlan.BASIC);
     }
 
     @Test
     void testEnrollStudentInCourse() throws Exception {
         // Arrange: Create and save a student
-        CreateStudentRequestDto request = new CreateStudentRequestDto("user2", "0987654321", SubscriptionPlan.BASIC);
+        CreateStudentRequestDto request = createStudentDto("user2", SubscriptionPlan.BASIC);
         mockMvc.perform(post("/api/students")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
@@ -104,7 +104,7 @@ class StudentControllerIntegrationTest {
     @Test
     void testCompleteCourse() throws Exception {
         // Arrange
-        CreateStudentRequestDto request = new CreateStudentRequestDto("user3", "1122334455", SubscriptionPlan.BASIC);
+        CreateStudentRequestDto request = createStudentDto("user3", SubscriptionPlan.BASIC);
         mockMvc.perform(post("/api/students")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
@@ -125,11 +125,26 @@ class StudentControllerIntegrationTest {
         assertThat(student.getCompletedCourses()).contains(courseId);
     }
 
+    private CreateStudentRequestDto createStudentDto(String userId, SubscriptionPlan plan) {
+        return new CreateStudentRequestDto(
+                userId,
+                "Max",
+                "Mustermann",
+                "max.mustermann@max.com",
+                "+49012341243",
+                "Germany",
+                plan,
+                "DE",
+                "Test"
+
+        );
+    }
+
     @Test
     void testGetStudents() throws Exception {
         // Arrange
-        CreateStudentRequestDto student1 = new CreateStudentRequestDto("user4", "5566778899", SubscriptionPlan.BASIC);
-        CreateStudentRequestDto student2 = new CreateStudentRequestDto("user5", "9988776655", SubscriptionPlan.PLATINUM);
+        CreateStudentRequestDto student1 = createStudentDto("user4", SubscriptionPlan.BASIC);
+        CreateStudentRequestDto student2 = createStudentDto("user5",  SubscriptionPlan.PLATINUM);
 
         mockMvc.perform(post("/api/students")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -152,7 +167,7 @@ class StudentControllerIntegrationTest {
     @Test
     void testDeleteStudent() throws Exception {
         // Arrange
-        CreateStudentRequestDto request = new CreateStudentRequestDto("user6", "1112223333", SubscriptionPlan.GOLD);
+        CreateStudentRequestDto request = createStudentDto("user6", SubscriptionPlan.GOLD);
         mockMvc.perform(post("/api/students")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))

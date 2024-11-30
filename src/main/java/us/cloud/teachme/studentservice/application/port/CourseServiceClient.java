@@ -1,8 +1,12 @@
 package us.cloud.teachme.studentservice.application.port;
 
-import java.net.http.HttpResponse;
+import us.cloud.teachme.studentservice.application.dto.CourseDetailsCollection;
+
+import java.util.List;
 
 public interface CourseServiceClient {
 
-    HttpResponse<Void> validateCourse(String courseId);
+    boolean validateCourse(String courseId);
+
+    CourseDetailsCollection getCourseDetails(List<String> courseId);
 }
