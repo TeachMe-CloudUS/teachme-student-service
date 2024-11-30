@@ -3,7 +3,7 @@ name: Build and deploy container app to Azure Web App 🚀
 on:
   push:
     branches:
-      - protect-routes
+      - main
   workflow_dispatch:
 
 jobs:
