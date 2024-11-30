@@ -30,7 +30,7 @@ jobs:
           servers: |
             [{
                 "id": "github",
-                "username": "${{ secrets.GITHUB_ACTOR}}",
+                "username": "${{ github.actor }}",
                 "password": "${{ secrets.GITHUB_TOKEN }}"
             }]
 
