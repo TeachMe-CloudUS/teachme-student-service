@@ -6,11 +6,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import us.cloud.teachme.studentservice.application.command.EnrollStudentCommand;
+import us.cloud.teachme.studentservice.application.port.CourseServiceClient;
 import us.cloud.teachme.studentservice.application.port.EventPublisher;
 import us.cloud.teachme.studentservice.application.port.StudentRepository;
 import us.cloud.teachme.studentservice.domain.event.StudentEnrollmentEvent;
 import us.cloud.teachme.studentservice.domain.exception.StudentNotFoundException;
 import us.cloud.teachme.studentservice.domain.model.Student;
+import us.cloud.teachme.studentservice.domain.model.valueObject.UserId;
 
 import java.util.Optional;
 
@@ -28,6 +30,9 @@ class EnrollmentServiceTest {
     @Mock
     private StudentCacheService studentCacheService;
 
+    @Mock
+    private CourseServiceClient courseServiceClient;
+
     @InjectMocks
     private EnrollmentService enrollmentService;
 
@@ -44,7 +49,9 @@ class EnrollmentServiceTest {
         EnrollStudentCommand command = new EnrollStudentCommand(studentId, courseId);
 
         Student student = mock(Student.class);
+        when(student.getUserId()).thenReturn(new UserId("user-id"));
         when(studentRepository.findStudentById(studentId)).thenReturn(Optional.of(student));
+        when(courseServiceClient.validateCourse(any())).thenReturn(true);
 
         // Act
         enrollmentService.enrollStudentInCourse(command);

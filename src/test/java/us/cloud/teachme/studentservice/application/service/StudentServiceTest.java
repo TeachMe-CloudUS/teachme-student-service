@@ -81,16 +81,15 @@ class StudentServiceTest {
     }
 
     @Test
-    void getStudentById_shouldReturnNull_whenStudentDoesNotExist() {
+    void getStudentById_shouldThrowStudentNotFoundException_whenStudentDoesNotExist() {
         // Arrange
         String studentId = "nonexistent";
         when(studentRepository.findStudentById(studentId)).thenReturn(Optional.empty());
 
         // Act
-        StudentDto result = studentService.getStudentById(studentId);
+        assertThrows(StudentNotFoundException.class, () -> studentService.getStudentById(studentId));
 
         // Assert
-        assertNull(result);
         verify(studentRepository, times(1)).findStudentById(studentId);
     }
 
@@ -104,10 +103,9 @@ class StudentServiceTest {
         studentService.deleteStudentById(student.getId());
 
         when(studentRepository.findStudentById(student.getId())).thenReturn(Optional.empty());
-        StudentDto result = studentService.getStudentById(student.getId());
+        assertThrows(StudentNotFoundException.class, () -> studentService.deleteStudentById(student.getId()));
 
         // Assert
-        assertNull(result);
         verify(studentRepository, times(2)).findStudentById(student.getId());
     }
 

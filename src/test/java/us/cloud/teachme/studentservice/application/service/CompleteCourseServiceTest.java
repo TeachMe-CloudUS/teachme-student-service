@@ -12,6 +12,7 @@ import us.cloud.teachme.studentservice.domain.event.CourseCompletedEvent;
 import us.cloud.teachme.studentservice.domain.exception.DomainException;
 import us.cloud.teachme.studentservice.domain.exception.StudentNotFoundException;
 import us.cloud.teachme.studentservice.domain.model.Student;
+import us.cloud.teachme.studentservice.domain.model.valueObject.UserId;
 
 import java.util.Optional;
 
@@ -43,6 +44,7 @@ class CompleteCourseServiceTest {
         CompleteCourseCommand command = new CompleteCourseCommand(studentId, courseId);
 
         Student student = mock(Student.class);
+        when(student.getUserId()).thenReturn(new UserId("user-id"));
         when(studentRepository.findStudentById(studentId)).thenReturn(Optional.of(student));
 
         // Simulate successful course completion
