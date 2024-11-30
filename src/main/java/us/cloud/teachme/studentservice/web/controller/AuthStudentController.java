@@ -14,6 +14,7 @@ import us.cloud.teachme.studentservice.application.adapter.*;
 import us.cloud.teachme.studentservice.application.command.CompleteMyCourseCommand;
 import us.cloud.teachme.studentservice.application.command.EnrollMeInCourseCommand;
 import us.cloud.teachme.studentservice.application.command.UpdateMeCommand;
+import us.cloud.teachme.studentservice.application.dto.CourseDetailsCollection;
 import us.cloud.teachme.studentservice.application.dto.StudentDto;
 import us.cloud.teachme.studentservice.web.request.UpdateStudentRequestDto;
 
@@ -27,6 +28,7 @@ public class AuthStudentController {
     private final EnrollmentAdapter enrollmentService;
     private final CompleteCourseAdapter completeCourseService;
     private final CreateStudentAdapter createStudentService;
+    private final GetCoursesAdapter getCoursesService;
     private final UpdateStudentAdapter updateStudentService;
 
     @Operation(summary = "Get student by UserId", description = "Retrieve a specific student by their UserId")
@@ -100,22 +102,22 @@ public class AuthStudentController {
         return ResponseEntity.noContent().build();
     }
 
-/*
+    @Operation(summary = "Get all student courses", description = "Retrieve a list of all courses a student is enrolled in")
+    @ApiResponse(responseCode = "200", description = "Successfully retrieved list of courses")
     @GetMapping("/courses")
     public ResponseEntity<CourseDetailsCollection> getEnrolledCourses(@AuthenticationPrincipal Claims claims) {
-        var enrolledCourses = studentService.getEnrolledCourses(claims.getSubject());
+        var enrolledCourses = getCoursesService.getEnrolledCoursesByUserId(claims.getSubject());
         return ResponseEntity.ok(enrolledCourses);
     }
-*/
 
-    // @Todo: GetCompletedCourses
-/*
+    @Operation(summary = "Get all student´s completed courses", description = "Retrieve a list of all courses a student has completed")
+    @ApiResponse(responseCode = "200", description = "Successfully retrieved list of completed courses")
+
     @GetMapping("/completed-courses")
     public ResponseEntity<CourseDetailsCollection> getCompletedCourses(@AuthenticationPrincipal Claims claims) {
-        var enrolledCourses = studentService.getCompletedCourses(claims.getSubject());
+        var enrolledCourses = getCoursesService.getCompletedCoursesByUserId(claims.getSubject());
         return ResponseEntity.ok(enrolledCourses);
     }
-*/
 
 /*
     @Operation(summary = "Complete a course for a student", description = "Mark a course as completed for a student")

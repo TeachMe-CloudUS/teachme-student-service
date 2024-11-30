@@ -30,6 +30,19 @@ public class GetCoursesService implements GetCoursesAdapter {
     }
 
     @Override
+    public CourseDetailsCollection getEnrolledCoursesByUserId(String userId) {
+        Student student = studentRepository.findStudentByUserId(userId)
+                .orElseThrow(() -> new StudentNotFoundException(userId));
+
+        var enrolledCourses = student.getEnrolledCourses();
+        if (enrolledCourses.isEmpty()) {
+            return new CourseDetailsCollection();
+        }
+
+        return courseServiceClient.getCourseDetails(enrolledCourses);
+    }
+
+    @Override
     public CourseDetailsCollection getCompletedCourses(String studentId) {
         Student student = studentRepository.findStudentById(studentId)
                 .orElseThrow(() -> new StudentNotFoundException(studentId));
@@ -43,4 +56,17 @@ public class GetCoursesService implements GetCoursesAdapter {
         return courseServiceClient.getCourseDetails(enrolledCourses);
     }
 
+    @Override
+    public CourseDetailsCollection getCompletedCoursesByUserId(String userId) {
+        Student student = studentRepository.findStudentByUserId(userId)
+                .orElseThrow(() -> new StudentNotFoundException(userId));
+
+        var enrolledCourses = student.getCompletedCourses();
+        if (enrolledCourses.isEmpty()) {
+            return new CourseDetailsCollection();
+        }
+
+
+        return courseServiceClient.getCourseDetails(enrolledCourses);
+    }
 }

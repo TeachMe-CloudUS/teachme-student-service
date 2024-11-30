@@ -6,5 +6,9 @@ public interface GetCoursesAdapter {
 
     CourseDetailsCollection getEnrolledCourses(String studentId);
 
+    CourseDetailsCollection getEnrolledCoursesByUserId(String userId);
+
     CourseDetailsCollection getCompletedCourses(String studentId);
+
+    CourseDetailsCollection getCompletedCoursesByUserId(String userId);
 }

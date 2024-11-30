@@ -154,12 +154,16 @@ public class StudentController {
         return ResponseEntity.noContent().build();
     }
 
+    @Operation(summary = "Get all student courses", description = "Retrieve a list of all courses a student is enrolled in")
+    @ApiResponse(responseCode = "200", description = "Successfully retrieved list of courses")
     @GetMapping("{studentId}/courses")
     public ResponseEntity<CourseDetailsCollection> getEnrolledCourses(@PathVariable String studentId) {
         var enrolledCourses = getCoursesService.getEnrolledCourses(studentId);
         return ResponseEntity.ok(enrolledCourses);
     }
 
+    @Operation(summary = "Get all student´s completed courses", description = "Retrieve a list of all courses a student has completed")
+    @ApiResponse(responseCode = "200", description = "Successfully retrieved list of completed courses")
     @GetMapping("{studentId}/completed-courses")
     public ResponseEntity<CourseDetailsCollection> getCompletedCourses(@PathVariable String studentId) {
         var completedCourses = getCoursesService.getCompletedCourses(studentId);
