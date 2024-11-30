@@ -26,6 +26,16 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
+      - name: Set up maven settings ⚙️
+        uses: s4u/maven-settings-action@v3.1.0
+        with:
+          servers: |
+            [{
+                "id": "github",
+                "username": "${{ github.actor }}",
+                "password": "${{ secrets.GITHUB_TOKEN }}"
+            }]
+
       - name: Clear project 🧹
         run: mvn clean
 

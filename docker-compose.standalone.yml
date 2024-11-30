@@ -3,10 +3,11 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.dev
+      secrets:
+        - maven_settings
     volumes:
       - .:/app
       - ./target:/app/target
-      - /root/.m2:/root/.m2
     environment:
       - SPRING_PROFILES_ACTIVE=dev
       - SPRING_DEVTOOLS_RESTART_ENABLED=true
@@ -37,6 +38,10 @@ services:
       - "6379:6379"
     networks:
       - student-service-network
+
+secrets:
+  maven_settings:
+    file: ~/.m2/settings.xml
 
 networks:
   student-service-network:
