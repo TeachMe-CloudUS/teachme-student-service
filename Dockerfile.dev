@@ -21,7 +21,7 @@ RUN --mount=type=secret,id=maven_settings,target=/root/.m2/settings.xml \
 COPY . /app
 
 RUN --mount=type=secret,id=maven_settings,target=/root/.m2/settings.xml \
-    RUN mvn clean install -Dmaven.test.skip=true
+    mvn clean install -Dmaven.test.skip=true
 
 EXPOSE 8080
 
