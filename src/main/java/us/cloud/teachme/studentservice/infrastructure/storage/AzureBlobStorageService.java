@@ -27,15 +27,7 @@ public class AzureBlobStorageService implements StoragePort {
             throw new RuntimeException("File upload failed", e);
         }
 
-        BlobSasPermission permission = new BlobSasPermission().setReadPermission(true);
-        BlobServiceSasSignatureValues values = new BlobServiceSasSignatureValues(
-                OffsetDateTime.now().plusHours(1),
-                permission
-        );
-
-        String sasToken = blobClient.generateSas(values);
-
-        return blobClient.getBlobUrl() + "?" + sasToken;
+        return blobClient.getBlobUrl();
     }
 
     @Override

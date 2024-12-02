@@ -28,11 +28,9 @@ public class AzureBlobStorageConfig {
                 .serviceVersion(BlobServiceVersion.V2025_01_05)
                 .connectionString(connectionString).buildClient();
 
-        return blobServiceClient.createBlobContainerIfNotExistsWithResponse(
-                containerName,
-                new BlobContainerCreateOptions().setPublicAccessType(PublicAccessType.BLOB),
-                Context.NONE
-        ).getValue();
+        var blobContainerClient = blobServiceClient.createBlobContainerIfNotExists(containerName);
+        blobContainerClient.setAccessPolicy(PublicAccessType.BLOB, null);
+        return blobContainerClient;
     }
 
 }
