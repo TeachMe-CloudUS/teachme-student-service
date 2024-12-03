@@ -1,5 +1,6 @@
 package us.cloud.teachme.studentservice.web.controller;
 
+import com.azure.storage.blob.BlobContainerClient;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -9,19 +10,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-import us.cloud.teachme.studentservice.application.adapter.CompleteCourseAdapter;
-import us.cloud.teachme.studentservice.application.adapter.CreateStudentAdapter;
-import us.cloud.teachme.studentservice.application.adapter.EnrollmentAdapter;
-import us.cloud.teachme.studentservice.application.adapter.StudentAdapter;
+import us.cloud.teachme.studentservice.application.adapter.*;
 import us.cloud.teachme.studentservice.application.command.CompleteCourseCommand;
 import us.cloud.teachme.studentservice.application.command.CreateStudentCommand;
 import us.cloud.teachme.studentservice.application.command.EnrollStudentCommand;
 import us.cloud.teachme.studentservice.application.dto.StudentDto;
+import us.cloud.teachme.studentservice.application.port.StoragePort;
 import us.cloud.teachme.studentservice.application.service.StudentFactory;
 import us.cloud.teachme.studentservice.domain.exception.StudentAlreadyExistsException;
 import us.cloud.teachme.studentservice.domain.exception.StudentNotFoundException;
 import us.cloud.teachme.studentservice.domain.model.Student;
 import us.cloud.teachme.studentservice.domain.model.valueObject.SubscriptionPlan;
+import us.cloud.teachme.studentservice.infrastructure.config.AzureBlobStorageConfig;
 
 import java.util.List;
 
@@ -50,6 +50,18 @@ class StudentControllerTest {
 
     @MockBean
     private CreateStudentAdapter createStudentService;
+
+    @MockBean
+    private ProfilePictureAdapter profilePictureService;
+
+    @MockBean
+    private StoragePort port;
+
+    @MockBean
+    private BlobContainerClient blobContainerClient;
+
+    @MockBean
+    private AzureBlobStorageConfig azureBlobStorageConfig;
 
     @Test
     void testGetStudents() throws Exception {

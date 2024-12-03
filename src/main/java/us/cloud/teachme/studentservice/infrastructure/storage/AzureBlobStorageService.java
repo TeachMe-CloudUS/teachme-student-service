@@ -2,15 +2,12 @@ package us.cloud.teachme.studentservice.infrastructure.storage;
 
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
-import com.azure.storage.blob.sas.BlobSasPermission;
-import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import us.cloud.teachme.studentservice.application.port.StoragePort;
 
 import java.io.IOException;
-import java.time.OffsetDateTime;
 
 @Service
 @RequiredArgsConstructor

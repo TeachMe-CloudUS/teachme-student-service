@@ -1,11 +1,9 @@
 package us.cloud.teachme.studentservice.infrastructure.config;
 
-import com.azure.core.util.Context;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.models.PublicAccessType;
-import com.azure.storage.blob.options.BlobContainerCreateOptions;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
