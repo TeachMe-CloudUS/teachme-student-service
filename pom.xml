@@ -16,6 +16,7 @@
 
 	<properties>
 		<java.version>17</java.version>
+		<azure.blobstore.version>12.29.0</azure.blobstore.version>
 	</properties>
 
 	<dependencies>
@@ -79,6 +80,12 @@
 			<groupId>redis.clients</groupId>
 			<artifactId>jedis</artifactId>
 			<version>5.2.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.azure</groupId>
+			<artifactId>azure-storage-blob</artifactId>
+			<version>${azure.blobstore.version}</version>
 		</dependency>
 
 		<dependency>

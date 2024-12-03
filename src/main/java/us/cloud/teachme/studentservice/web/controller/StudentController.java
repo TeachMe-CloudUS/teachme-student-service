@@ -10,11 +10,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import us.cloud.teachme.studentservice.application.adapter.*;
-import us.cloud.teachme.studentservice.application.command.CompleteCourseCommand;
-import us.cloud.teachme.studentservice.application.command.CreateStudentCommand;
-import us.cloud.teachme.studentservice.application.command.EnrollStudentCommand;
-import us.cloud.teachme.studentservice.application.command.UpdateStudentCommand;
+import us.cloud.teachme.studentservice.application.command.*;
 import us.cloud.teachme.studentservice.application.dto.CourseDetailsCollection;
 import us.cloud.teachme.studentservice.application.dto.StudentDto;
 import us.cloud.teachme.studentservice.web.request.CreateStudentRequestDto;
@@ -34,6 +32,7 @@ public class StudentController {
     private final CreateStudentAdapter createStudentService;
     private final UpdateStudentAdapter updateStudentService;
     private final GetCoursesAdapter getCoursesService;
+    private final ProfilePictureAdapter profilePictureService;
 
     @Operation(summary = "Get all students", description = "Retrieve a list of all registered students")
     @ApiResponse(responseCode = "200", description = "Successfully retrieved list of students")
@@ -168,6 +167,47 @@ public class StudentController {
     public ResponseEntity<CourseDetailsCollection> getCompletedCourses(@PathVariable String studentId) {
         var completedCourses = getCoursesService.getCompletedCourses(studentId);
         return ResponseEntity.ok(completedCourses);
+    }
+
+    @Operation(
+            summary = "Upload Profile Picture",
+            description = "Allows an authenticated user to upload a new profile picture."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Profile picture uploaded successfully, returns the URL of the uploaded image."),
+            @ApiResponse(responseCode = "400", description = "Invalid file or upload request."),
+            @ApiResponse(responseCode = "401", description = "Unauthorized access."),
+            @ApiResponse(responseCode = "500", description = "Server error occurred during upload.")
+    })
+    @PostMapping("/{studentId}/profile-picture/upload")
+    public ResponseEntity<String> uploadProfilePicture(
+            @PathVariable String studentId,
+            @RequestParam("file") MultipartFile file) {
+
+        String fileUrl = profilePictureService.upload(
+                new UploadProfilePictureCommand(studentId, file)
+        );
+
+        return ResponseEntity.ok(fileUrl);
+    }
+
+    @Operation(
+            summary = "Delete Profile Picture",
+            description = "Allows an authenticated user to delete their existing profile picture."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Profile picture deleted successfully."),
+            @ApiResponse(responseCode = "401", description = "Unauthorized access."),
+            @ApiResponse(responseCode = "404", description = "Profile picture not found."),
+            @ApiResponse(responseCode = "500", description = "Server error occurred during deletion.")
+    })
+    @DeleteMapping("/{studentId}/profile-picture/delete")
+    public ResponseEntity<Void> deleteProfilePicture(@PathVariable String studentId) {
+        profilePictureService.delete(
+                new DeleteProfilePictureCommand(studentId)
+        );
+
+        return ResponseEntity.noContent().build();
     }
 
     // @Todo: GetCompletedCourses
