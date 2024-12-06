@@ -21,7 +21,7 @@ import us.cloud.teachme.studentservice.web.request.UpdateStudentRequestDto;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/students")
+@RequestMapping("/api/v1/students")
 @AllArgsConstructor
 @Tag(name = "Student Management", description = "APIs for managing students of the teachme platform")
 public class StudentController {

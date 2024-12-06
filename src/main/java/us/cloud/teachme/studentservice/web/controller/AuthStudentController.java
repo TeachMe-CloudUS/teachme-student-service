@@ -18,7 +18,7 @@ import us.cloud.teachme.studentservice.application.dto.StudentDto;
 import us.cloud.teachme.studentservice.web.request.UpdateStudentRequestDto;
 
 @RestController
-@RequestMapping("/api/students/me")
+@RequestMapping("/api/v1/students/me")
 @AllArgsConstructor
 @Tag(name = "Authenticated Student Management", description = "APIs for managing an authenticated student of the teachme platform")
 public class AuthStudentController {
