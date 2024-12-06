@@ -72,7 +72,7 @@ class StudentControllerTest {
         when(studentService.getStudents()).thenReturn(List.of(new StudentDto(mockStudent)));
 
         // Act & Assert
-        mockMvc.perform(get("/api/students"))
+        mockMvc.perform(get("/api/v1/students"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$[0].id").value("1"))
@@ -89,7 +89,7 @@ class StudentControllerTest {
         when(studentService.getStudentById("1")).thenReturn(new StudentDto(mockStudent));
 
         // Act & Assert
-        mockMvc.perform(get("/api/students/{id}", "1"))
+        mockMvc.perform(get("/api/v1/students/{id}", "1"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id").value("1"))
@@ -103,7 +103,7 @@ class StudentControllerTest {
         when(studentService.getStudentById("1")).thenThrow(new StudentNotFoundException("1"));
 
         // Act & Assert
-        mockMvc.perform(get("/api/students/{id}", "1"))
+        mockMvc.perform(get("/api/v1/students/{id}", "1"))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.error").value(HttpStatus.NOT_FOUND.toString()));
     }
@@ -114,7 +114,7 @@ class StudentControllerTest {
         doNothing().when(enrollmentService).enrollStudentInCourse(any(EnrollStudentCommand.class));
 
         // Act & Assert
-        mockMvc.perform(post("/api/students/{studentId}/courses/{courseId}/enroll", "1", "course1"))
+        mockMvc.perform(post("/api/v1/students/{studentId}/courses/{courseId}/enroll", "1", "course1"))
                 .andExpect(status().isOk());
     }
 
@@ -124,7 +124,7 @@ class StudentControllerTest {
         doThrow(new StudentNotFoundException("1")).when(enrollmentService).enrollStudentInCourse(any(EnrollStudentCommand.class));
 
         // Act & Assert
-        mockMvc.perform(post("/api/students/{studentId}/courses/{courseId}/enroll", "1", "course1"))
+        mockMvc.perform(post("/api/v1/students/{studentId}/courses/{courseId}/enroll", "1", "course1"))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.error").value(HttpStatus.NOT_FOUND.toString()));
     }
@@ -135,7 +135,7 @@ class StudentControllerTest {
         doNothing().when(completeCourseService).completeStudentCourse(any(CompleteCourseCommand.class));
 
         // Act & Assert
-        mockMvc.perform(post("/api/students/{studentId}/courses/{courseId}/complete", "1", "course1"))
+        mockMvc.perform(post("/api/v1/students/{studentId}/courses/{courseId}/complete", "1", "course1"))
                 .andExpect(status().isOk());
     }
 
@@ -145,7 +145,7 @@ class StudentControllerTest {
         doThrow(new StudentNotFoundException("1")).when(completeCourseService).completeStudentCourse(any(CompleteCourseCommand.class));
 
         // Act & Assert
-        mockMvc.perform(post("/api/students/{studentId}/courses/{courseId}/complete", "1", "course1"))
+        mockMvc.perform(post("/api/v1/students/{studentId}/courses/{courseId}/complete", "1", "course1"))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.error").value(HttpStatus.NOT_FOUND.toString()));
     }
@@ -159,7 +159,7 @@ class StudentControllerTest {
         String content = "{ \"userId\": \"user1\", \"name\": \"Max\", \"surname\":\"Mustermann\", \"email\": \"max.mustermann@gmail.com\", \"phoneNumber\": \"+584127772190\", \"language\": \"spanish\", \"plan\": \"BASIC\" }";
 
         // Act & Assert
-        mockMvc.perform(post("/api/students")
+        mockMvc.perform(post("/api/v1/students")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(content))
                 .andExpect(status().isCreated());
@@ -173,7 +173,7 @@ class StudentControllerTest {
         String content = "{ \"userId\": \"user1\", \"name\": \"Max\", \"surname\":\"Mustermann\", \"email\": \"max.mustermann@gmail.com\", \"phoneNumber\": \"+584127772190\", \"language\": \"spanish\", \"plan\": \"BASIC\" }";
 
         // Act & Assert
-        mockMvc.perform(post("/api/students")
+        mockMvc.perform(post("/api/v1/students")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(content))
                 .andExpect(status().isConflict())
@@ -183,7 +183,7 @@ class StudentControllerTest {
     @Test
     void testCreateStudent_ValidationError() throws Exception {
         // Act & Assert
-        mockMvc.perform(post("/api/students")
+        mockMvc.perform(post("/api/v1/students")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"phoneNumber\":\"1234567890\", \"plan\":\"BASIC\"}")) // Missing userId
                 .andExpect(status().isBadRequest())
