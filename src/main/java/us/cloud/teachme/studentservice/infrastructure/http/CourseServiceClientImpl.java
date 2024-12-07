@@ -2,7 +2,9 @@ package us.cloud.teachme.studentservice.infrastructure.http;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClient;
+import reactor.core.publisher.Mono;
 import us.cloud.teachme.studentservice.application.dto.CourseDetailsCollection;
 import us.cloud.teachme.studentservice.application.port.CourseServiceClient;
 
@@ -19,24 +21,37 @@ public class CourseServiceClientImpl implements CourseServiceClient {
 
     @Override
     public boolean validateCourse(String courseId) {
-        return courseServiceClient.get().uri(String.format("/api/courses/%s", courseId))
-                .exchange((request, response) -> {
-                    if (response.getStatusCode() != HttpStatus.OK) {
-                        throw new RuntimeException("No course found!");
-                    }
-                    return true;
-                });
+        try {
+            courseServiceClient.get()
+                    .uri(String.format("/api/v1/courses/%s", courseId))
+                    .retrieve()
+                    .onStatus(
+                            status -> !status.equals(HttpStatus.OK),
+                            (response, request) ->
+                                    Mono.error(new RuntimeException("No course found!"))
+                    )
+                    .toBodilessEntity();
+
+            return true;
+        } catch (Exception e) {
+            System.err.println("Error validating course: " + e.getMessage());
+            return false;
+        }
     }
 
     @Override
     public CourseDetailsCollection getCourseDetails(List<String> courseId) {
-        return courseServiceClient.get().uri("/api/courses")
-                .exchange((request, response) -> {
-                    if (response.getStatusCode() != HttpStatus.OK) {
-                        throw new RuntimeException(response.getStatusText());
-                    }
-                    return response.bodyTo(CourseDetailsCollection.class);
-
-                });
+        try {
+            return courseServiceClient.post()
+                    .uri("/api/v1/courses/list")
+                    .body(courseId)
+                    .retrieve()
+                    .toEntity(CourseDetailsCollection.class)
+                    .getBody();
+        } catch (HttpClientErrorException ex) {
+            throw new RuntimeException("No course found! Status: " + ex.getStatusCode());
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to fetch course details", e);
+        }
     }
 }
