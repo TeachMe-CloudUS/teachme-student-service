@@ -19,7 +19,7 @@ public class AzureBlobStorageService implements StoragePort {
     public String uploadFile(String fileUrl, MultipartFile file) {
         var blobClient = blobContainerClient.getBlobClient(fileUrl);
         try {
-            blobClient.upload(file.getInputStream());
+            blobClient.upload(file.getInputStream(), true);
         } catch (IOException e) {
             throw new RuntimeException("File upload failed", e);
         }
