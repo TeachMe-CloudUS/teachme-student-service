@@ -46,7 +46,8 @@ public class StudentDto {
         this.profileInformation = new ProfileInformationDto(
                 student.getProfileInformation().getPlan(),
                 student.getProfileInformation().getLanguage().language(),
-                student.getProfileInformation().getBio()
+                student.getProfileInformation().getBio(),
+                student.getProfileInformation().getProfilePicture()
         );
 
         this.enrolledCourses = student.getEnrolledCourses();
