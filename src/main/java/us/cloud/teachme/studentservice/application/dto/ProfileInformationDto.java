@@ -20,4 +20,7 @@ public class ProfileInformationDto {
 
     @Schema(description = "Profile description of the Student", example = "Ambitious CS student @US")
     private String bio;
+
+    @Schema(description = "Url of the profile picture")
+    private String profilePictureUrl;
 }
