@@ -73,7 +73,7 @@
 		<dependency>
 			<groupId>us.cloud.teachme</groupId>
 			<artifactId>teachme-auth-utils</artifactId>
-			<version>0.0.3-SNAPSHOT</version>
+			<version>0.0.4-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>

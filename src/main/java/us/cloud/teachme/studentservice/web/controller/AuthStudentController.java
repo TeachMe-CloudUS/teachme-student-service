@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -84,7 +85,7 @@ public class AuthStudentController {
     })
     @PutMapping
     public ResponseEntity<Void> updateStudent(@AuthenticationPrincipal Claims claims,
-                                              @RequestBody UpdateStudentRequestDto updateStudentRequestDto) {
+                                              @RequestBody @Valid UpdateStudentRequestDto updateStudentRequestDto) {
         updateStudentService.updateStudent(
                 new UpdateMeCommand(
                         claims.getSubject(),
@@ -92,7 +93,6 @@ public class AuthStudentController {
                         updateStudentRequestDto.getPlan(),
                         updateStudentRequestDto.getName(),
                         updateStudentRequestDto.getSurname(),
-                        updateStudentRequestDto.getEmail(),
                         updateStudentRequestDto.getCountry(),
                         updateStudentRequestDto.getLanguage(),
                         updateStudentRequestDto.getBio()

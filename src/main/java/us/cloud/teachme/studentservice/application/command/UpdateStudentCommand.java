@@ -8,7 +8,6 @@ public record UpdateStudentCommand(
         SubscriptionPlan plan,
         String name,
         String surname,
-        String email,
         String country,
         String language,
         String bio

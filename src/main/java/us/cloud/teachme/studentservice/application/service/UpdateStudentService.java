@@ -35,7 +35,7 @@ public class UpdateStudentService implements UpdateStudentAdapter {
                 ContactInformation.create(
                         Objects.isNull(command.name()) ? student.getContactInformation().getName().name() : command.name(),
                         Objects.isNull(command.surname()) ? student.getContactInformation().getName().surname() : command.surname(),
-                        Objects.isNull(command.email()) ? student.getContactInformation().getEmail().email() : command.email(),
+                        student.getContactInformation().getEmail().email(),
                         Objects.isNull(command.phoneNumber()) ? student.getContactInformation().getPhoneNumber().value() : command.phoneNumber(),
                         Objects.isNull(command.country()) ? student.getContactInformation().getCountry() : command.country()
                 )
@@ -73,7 +73,7 @@ public class UpdateStudentService implements UpdateStudentAdapter {
                 ContactInformation.create(
                         Objects.isNull(command.name()) ? student.getContactInformation().getName().name() : command.name(),
                         Objects.isNull(command.surname()) ? student.getContactInformation().getName().surname() : command.surname(),
-                        Objects.isNull(command.email()) ? student.getContactInformation().getEmail().email() : command.email(),
+                        student.getContactInformation().getEmail().email(),
                         Objects.isNull(command.phoneNumber()) ? student.getContactInformation().getPhoneNumber().value() : command.phoneNumber(),
                         Objects.isNull(command.country()) ? student.getContactInformation().getCountry() : command.country()
                 )

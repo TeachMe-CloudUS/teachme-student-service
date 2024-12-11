@@ -143,7 +143,6 @@ public class StudentController {
                         updateStudentRequestDto.getPlan(),
                         updateStudentRequestDto.getName(),
                         updateStudentRequestDto.getSurname(),
-                        updateStudentRequestDto.getEmail(),
                         updateStudentRequestDto.getCountry(),
                         updateStudentRequestDto.getLanguage(),
                         updateStudentRequestDto.getBio()
