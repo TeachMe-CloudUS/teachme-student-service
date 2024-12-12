@@ -3,12 +3,13 @@ package us.cloud.teachme.studentservice.domain.event;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import us.cloud.teachme.studentservice.domain.model.valueObject.SubscriptionPlan;
+import us.cloud.teachme.studentservice.infrastructure.messaging.KafkaTopics;
 
 @Getter
 @AllArgsConstructor
 public class StudentUpdateEvent extends DomainEvent {
 
-    private static final String EVENT_NAME = "student.updated";
+    private static final String EVENT_NAME = KafkaTopics.STUDENT_UPDATED.getName();
 
     private final String studentId;
     private final String userId;
