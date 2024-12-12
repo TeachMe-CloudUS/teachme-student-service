@@ -79,9 +79,9 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.springframework.kafka</groupId>
-			<artifactId>spring-kafka</artifactId>
-			<version>${kafka.version}</version>
+			<groupId>us.cloud.teachme</groupId>
+			<artifactId>kafka-config</artifactId>
+			<version>0.0.2-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>
