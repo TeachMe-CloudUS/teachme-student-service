@@ -1,6 +1,6 @@
-package us.cloud.teachme.studentservice.infrastructure.messaging;
+package us.cloud.teachme.studentservice.domain.event;
 
-public enum KafkaTopics {
+public enum EventName {
     STUDENT_UPDATED("student", "updated"),
     STUDENT_CREATED("student", "created"),
     STUDENT_ENROLLED("course", "enrolled"),
@@ -10,7 +10,7 @@ public enum KafkaTopics {
     private final String entity;
     private final String action;
 
-    KafkaTopics(String entity, String action) {
+    EventName(String entity, String action) {
         this.service = "student-service";
         this.entity = entity;
         this.action = action;
