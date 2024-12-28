@@ -8,7 +8,7 @@ import us.cloud.teachme.studentservice.domain.model.valueObject.SubscriptionPlan
 @AllArgsConstructor
 public class StudentUpdateEvent extends DomainEvent {
 
-    private static final String EVENT_NAME = "student.updated";
+    private static final String EVENT_NAME = EventName.STUDENT_UPDATED.getName();
 
     private final String studentId;
     private final String userId;

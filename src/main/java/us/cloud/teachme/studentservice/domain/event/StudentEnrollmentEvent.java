@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(callSuper = true)
 public class StudentEnrollmentEvent extends DomainEvent {
 
-    private static final String EVENT_NAME = "student.enrolled";
+    private static final String EVENT_NAME = EventName.STUDENT_ENROLLED.getName();
 
     private final String studentId;
     private final String userId;

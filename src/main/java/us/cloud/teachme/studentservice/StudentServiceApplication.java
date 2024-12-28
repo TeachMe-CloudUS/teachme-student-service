@@ -7,6 +7,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+import org.springframework.kafka.annotation.EnableKafka;
 
 @OpenAPIDefinition(
         info = @Info(
@@ -19,6 +20,7 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 @EnableCaching
 @SpringBootApplication
 @EnableMongoRepositories
+@EnableKafka
 public class StudentServiceApplication {
 
     public static void main(String[] args) {
