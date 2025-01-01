@@ -1,5 +1,6 @@
 package us.cloud.teachme.studentservice.application.service;
 
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,7 @@ import us.cloud.teachme.studentservice.application.port.EventPublisher;
 import us.cloud.teachme.studentservice.application.port.StudentRepository;
 import us.cloud.teachme.studentservice.domain.event.StudentEnrollmentEvent;
 import us.cloud.teachme.studentservice.domain.exception.CourseNotFoundException;
+import us.cloud.teachme.studentservice.domain.exception.ServiceUnavailableException;
 import us.cloud.teachme.studentservice.domain.exception.StudentNotFoundException;
 import us.cloud.teachme.studentservice.domain.model.Student;
 
@@ -29,7 +31,7 @@ public class EnrollmentService implements EnrollmentAdapter {
         Student student = studentRepository.findStudentById(command.studentId())
                 .orElseThrow(() -> new StudentNotFoundException(command.studentId()));
 
-        if (!courseServiceClient.validateCourse(command.courseId())) {
+        if (isCourseInvalid(command.courseId())) {
             throw new CourseNotFoundException(command.courseId());
         }
 
@@ -46,12 +48,21 @@ public class EnrollmentService implements EnrollmentAdapter {
         ));
     }
 
+    @CircuitBreaker(name = "student-service", fallbackMethod = "fallback")
+    private boolean isCourseInvalid(String courseId) {
+        return !courseServiceClient.validateCourse(courseId);
+    }
+
+    public void fallback(EnrollStudentCommand command, Throwable throwable) {
+        throw new ServiceUnavailableException(throwable.getMessage());
+    }
+
     @Override
     public void enrollStudentInCourse(EnrollMeInCourseCommand command) {
         Student student = studentRepository.findStudentByUserId(command.userId())
                 .orElseThrow(() -> new StudentNotFoundException(command.userId()));
 
-        if (!courseServiceClient.validateCourse(command.courseId())) {
+        if (isCourseInvalid(command.courseId())) {
             throw new CourseNotFoundException(command.courseId());
         }
 
