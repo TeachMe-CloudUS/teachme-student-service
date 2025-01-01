@@ -37,7 +37,9 @@ public class CreateStudentService implements CreateStudentAdapter {
         eventPublisher.publish(
                 new StudentCreatedEvent(
                         student.getId(),
-                        command.userId()
+                        command.userId(),
+                        student.getContactInformation().getName().name(),
+                        student.getContactInformation().getName().surname()
                 )
         );
 
