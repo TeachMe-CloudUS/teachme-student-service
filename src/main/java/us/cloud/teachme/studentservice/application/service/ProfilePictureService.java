@@ -1,5 +1,6 @@
 package us.cloud.teachme.studentservice.application.service;
 
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import us.cloud.teachme.studentservice.application.adapter.ProfilePictureAdapter;
@@ -22,7 +23,7 @@ public class ProfilePictureService implements ProfilePictureAdapter {
         Student student = studentRepository.findStudentByUserId(command.userId())
                 .orElseThrow(() -> new StudentNotFoundByUserIdException(command.userId()));
 
-        String fileUrl = storagePort.uploadFile(command.userId(), command.image());
+        String fileUrl = uploadFile(command);
 
         student.getProfileInformation().setProfilePicture(fileUrl);
 
@@ -31,15 +32,33 @@ public class ProfilePictureService implements ProfilePictureAdapter {
         return fileUrl;
     }
 
+    @CircuitBreaker(name = "student-service", fallbackMethod = "uploadFallback")
+    private String uploadFile(UploadProfilePictureCommand command) {
+        return storagePort.uploadFile(command.userId(), command.image());
+    }
+
+    public String uploadFallback(UploadProfilePictureCommand command, Throwable throwable) {
+        throw new StudentNotFoundByUserIdException(throwable.getMessage());
+    }
+
     @Override
     public void delete(DeleteProfilePictureCommand command) {
         Student student = studentRepository.findStudentByUserId(command.userId())
                 .orElseThrow(() -> new StudentNotFoundByUserIdException(command.userId()));
 
-        storagePort.deleteFile(command.userId());
+        deleteFile(command);
 
         student.getProfileInformation().setProfilePicture(null);
 
         studentRepository.saveStudent(student);
+    }
+
+    @CircuitBreaker(name = "student-service", fallbackMethod = "deleteFallback")
+    private void deleteFile(DeleteProfilePictureCommand command) {
+        storagePort.deleteFile(command.userId());
+    }
+
+    public String deleteFallback(DeleteProfilePictureCommand command, Throwable throwable) {
+        throw new StudentNotFoundByUserIdException(throwable.getMessage());
     }
 }

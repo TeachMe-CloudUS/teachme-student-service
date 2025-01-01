@@ -1,13 +1,17 @@
 package us.cloud.teachme.studentservice.application.service;
 
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import us.cloud.teachme.studentservice.application.adapter.GetCoursesAdapter;
 import us.cloud.teachme.studentservice.application.dto.CourseDetailsCollection;
 import us.cloud.teachme.studentservice.application.port.CourseServiceClient;
 import us.cloud.teachme.studentservice.application.port.StudentRepository;
+import us.cloud.teachme.studentservice.domain.exception.ServiceUnavailableException;
 import us.cloud.teachme.studentservice.domain.exception.StudentNotFoundException;
 import us.cloud.teachme.studentservice.domain.model.Student;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -26,7 +30,7 @@ public class GetCoursesService implements GetCoursesAdapter {
             return new CourseDetailsCollection();
         }
 
-        return courseServiceClient.getCourseDetails(enrolledCourses);
+        return getCourseDetails(enrolledCourses);
     }
 
     @Override
@@ -39,7 +43,7 @@ public class GetCoursesService implements GetCoursesAdapter {
             return new CourseDetailsCollection();
         }
 
-        return courseServiceClient.getCourseDetails(enrolledCourses);
+        return getCourseDetails(enrolledCourses);
     }
 
     @Override
@@ -52,8 +56,7 @@ public class GetCoursesService implements GetCoursesAdapter {
             return new CourseDetailsCollection();
         }
 
-
-        return courseServiceClient.getCourseDetails(enrolledCourses);
+        return getCourseDetails(enrolledCourses);
     }
 
     @Override
@@ -66,7 +69,16 @@ public class GetCoursesService implements GetCoursesAdapter {
             return new CourseDetailsCollection();
         }
 
+        return getCourseDetails(enrolledCourses);
+    }
 
+    @CircuitBreaker(name = "student-service", fallbackMethod = "fallback")
+    private CourseDetailsCollection getCourseDetails(List<String> enrolledCourses) {
         return courseServiceClient.getCourseDetails(enrolledCourses);
     }
+
+    public CourseDetailsCollection fallback(List<String> enrolledCourses, Throwable throwable) {
+        throw new ServiceUnavailableException(throwable.getMessage());
+    }
+
 }
