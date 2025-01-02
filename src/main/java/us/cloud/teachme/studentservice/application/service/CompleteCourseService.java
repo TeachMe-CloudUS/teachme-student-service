@@ -9,7 +9,7 @@ import us.cloud.teachme.studentservice.application.adapter.CompleteCourseAdapter
 import us.cloud.teachme.studentservice.application.command.CompleteCourseCommand;
 import us.cloud.teachme.studentservice.application.command.CompleteMyCourseCommand;
 import us.cloud.teachme.studentservice.application.dto.CourseDetailsCollection;
-import us.cloud.teachme.studentservice.application.dto.StudentDto;
+import us.cloud.teachme.studentservice.application.dto.StudentEventDto;
 import us.cloud.teachme.studentservice.application.port.CourseServiceClient;
 import us.cloud.teachme.studentservice.application.port.EventPublisher;
 import us.cloud.teachme.studentservice.application.port.StudentRepository;
@@ -45,7 +45,7 @@ public class CompleteCourseService implements CompleteCourseAdapter {
         var courseDetailsCollection = getCourseDetails(List.of(command.courseId()));
 
         eventPublisher.publish(new CourseCompletedEvent(
-                new StudentDto(student),
+                new StudentEventDto(student),
                 courseDetailsCollection.get(0)
         ));
     }
@@ -62,7 +62,7 @@ public class CompleteCourseService implements CompleteCourseAdapter {
         var courseDetailsCollection = getCourseDetails(List.of(command.courseId()));
 
         eventPublisher.publish(new CourseCompletedEvent(
-                new StudentDto(student),
+                new StudentEventDto(student),
                 courseDetailsCollection.get(0)
         ));
     }
