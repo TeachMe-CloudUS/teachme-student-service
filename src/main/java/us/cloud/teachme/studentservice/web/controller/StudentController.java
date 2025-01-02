@@ -51,6 +51,16 @@ public class StudentController {
         return studentService.getStudentById(studentId);
     }
 
+    @Operation(summary = "Get student by UserId", description = "Retrieve a specific student by their UserID")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved student"),
+            @ApiResponse(responseCode = "404", description = "Student not found")
+    })
+    @GetMapping("/byUserId/{userId}")
+    public StudentDto getStudentByUserId(@PathVariable String userId) {
+        return studentService.getStudentByUserId(userId);
+    }
+
     @Operation(summary = "Enroll student in a course", description = "Enroll a student in a specified course")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Successfully enrolled student in the course"),
