@@ -20,4 +20,10 @@ public class CourseDetailsDto {
 
     @Schema(description = "Category of the course")
     private String category;
+
+    @Schema(description = "Duration of the course")
+    private String duration;
+
+    @Schema(description = "Level of the course")
+    private String level;
 }
