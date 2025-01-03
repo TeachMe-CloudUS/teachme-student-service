@@ -55,7 +55,7 @@ public class UpdateStudentService implements UpdateStudentAdapter {
         studentCacheService.cacheStudent(updatedStudent);
         eventPublisher.publish(
                 new StudentUpdateEvent(
-                        student.getId(),
+                        command.studentId(),
                         updatedStudent.getUserId().value(),
                         command.phoneNumber(),
                         command.plan()
@@ -92,8 +92,8 @@ public class UpdateStudentService implements UpdateStudentAdapter {
 
         eventPublisher.publish(
                 new StudentUpdateEvent(
-                        updatedStudent.getUserId().value(),
                         student.getId(),
+                        updatedStudent.getUserId().value(),
                         command.phoneNumber(),
                         command.plan()
                 )
