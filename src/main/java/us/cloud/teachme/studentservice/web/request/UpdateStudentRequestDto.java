@@ -5,10 +5,12 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import us.cloud.teachme.studentservice.domain.model.valueObject.SubscriptionPlan;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class UpdateStudentRequestDto {
 
     @NotBlank(message = "Phone number is required")
