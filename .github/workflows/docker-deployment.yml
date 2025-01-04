@@ -41,6 +41,7 @@ jobs:
           docker build \
             --secret id=maven_settings,src=$HOME/.m2/settings.xml \
             -t raminkr/teachme-student-service:${{ github.sha }} \
+            -t raminkr/teachme-student-service:latest \
             .
 
       - name: Log in to Docker Hub 🔒
@@ -50,7 +51,9 @@ jobs:
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
       - name: Push Docker image to Docker Hub 🫸
-        run: docker push raminkr/teachme-student-service:${{ github.sha }}
+        run: |
+          docker push raminkr/teachme-student-service:${{ github.sha }}
+          docker push raminkr/teachme-student-service:latest
 
   deploy:
     runs-on: ubuntu-latest
