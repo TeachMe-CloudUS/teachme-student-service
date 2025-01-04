@@ -12,7 +12,7 @@ import org.springframework.kafka.annotation.EnableKafka;
 
 @OpenAPIDefinition(
         info = @Info(
-                title = "Student Microservice API",
+                title = "Teachme Student Service API",
                 version = "1.0",
                 description = "API for managing student data for the teachme platform",
                 contact = @Contact(name = "API Support", email = "ramnak@alum.us.es")
