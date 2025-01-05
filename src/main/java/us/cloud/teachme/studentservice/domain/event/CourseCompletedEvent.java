@@ -5,7 +5,7 @@ import lombok.Getter;
 import us.cloud.teachme.studentservice.application.dto.CourseDetailsDto;
 import us.cloud.teachme.studentservice.application.dto.StudentEventDto;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Getter
 @EqualsAndHashCode(callSuper = true)
@@ -15,12 +15,12 @@ public class CourseCompletedEvent extends DomainEvent {
 
     private final StudentEventDto student;
     private final CourseDetailsDto course;
-    private final Instant completionDate;
+    private final String completionDate;
 
     public CourseCompletedEvent(StudentEventDto student, CourseDetailsDto course) {
         this.student = student;
         this.course = course;
-        this.completionDate = Instant.now();
+        this.completionDate = LocalDateTime.now().toString();
     }
 
     @Override
