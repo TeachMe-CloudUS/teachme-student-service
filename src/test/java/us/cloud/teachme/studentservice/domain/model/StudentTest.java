@@ -87,16 +87,14 @@ class StudentTest {
     @Test
     void shouldThrowException_whenEnrollmentLimitIsReached() {
         // Arrange
-        student.enrollInCourse("course1");
-        student.enrollInCourse("course2");
-        student.enrollInCourse("course3");
-        student.enrollInCourse("course4");
-        student.enrollInCourse("course5");
+        for (int i = 1; i <= 10; i++) {
+            student.enrollInCourse("course" + i);
+        }
 
         // Act & Assert
         EnrollmentLimitReachedException exception = assertThrows(
                 EnrollmentLimitReachedException.class,
-                () -> student.enrollInCourse("course6"),
+                () -> student.enrollInCourse("course11"),
                 "Should throw exception when enrollment limit is reached"
         );
         assertEquals("Enrollment limit reached for plan: BASIC", exception.getMessage());
