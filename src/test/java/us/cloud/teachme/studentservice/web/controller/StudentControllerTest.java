@@ -6,15 +6,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.cache.CacheManager;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
+import org.springframework.kafka.config.KafkaListenerEndpointRegistry;
+import org.springframework.kafka.core.ConsumerFactory;
+import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.client.support.RestTemplateAdapter;
 import us.cloud.teachme.studentservice.application.adapter.*;
 import us.cloud.teachme.studentservice.application.command.CompleteCourseCommand;
 import us.cloud.teachme.studentservice.application.command.CreateStudentCommand;
 import us.cloud.teachme.studentservice.application.command.EnrollStudentCommand;
 import us.cloud.teachme.studentservice.application.dto.StudentDto;
+import us.cloud.teachme.studentservice.application.port.CourseServiceClient;
+import us.cloud.teachme.studentservice.application.port.EventPublisher;
 import us.cloud.teachme.studentservice.application.port.StoragePort;
 import us.cloud.teachme.studentservice.application.service.StudentFactory;
 import us.cloud.teachme.studentservice.domain.exception.StudentAlreadyExistsException;
@@ -22,6 +30,7 @@ import us.cloud.teachme.studentservice.domain.exception.StudentNotFoundException
 import us.cloud.teachme.studentservice.domain.model.Student;
 import us.cloud.teachme.studentservice.domain.model.valueObject.SubscriptionPlan;
 import us.cloud.teachme.studentservice.infrastructure.config.AzureBlobStorageConfig;
+import us.cloud.teachme.studentservice.infrastructure.storage.AzureConfigurationProperties;
 
 import java.util.List;
 
@@ -62,6 +71,39 @@ class StudentControllerTest {
 
     @MockBean
     private AzureBlobStorageConfig azureBlobStorageConfig;
+
+    @MockBean
+    private RestTemplateAdapter restTemplateAdapter;
+
+    @MockBean
+    private EventPublisher eventPublisher;
+
+    @MockBean
+    private GetCoursesAdapter getCoursesAdapter;
+
+    @MockBean
+    private UpdateStudentAdapter updateStudentAdapter;
+
+    @MockBean
+    private CourseServiceClient courseServiceClient;
+
+    @MockBean
+    private AzureConfigurationProperties azureConfigurationProperties;
+
+    @MockBean
+    private CacheManager cacheManager;
+
+    @MockBean
+    private ConcurrentKafkaListenerContainerFactory<String, Object> kafkaListenerContainerFactory;
+
+    @MockBean
+    private ConsumerFactory<String, Object> consumerFactory;
+
+    @MockBean
+    private ProducerFactory<String, Object> producerFactory;
+
+    @MockBean
+    private KafkaListenerEndpointRegistry kafkaListenerEndpointRegistry;
 
     @Test
     void testGetStudents() throws Exception {
