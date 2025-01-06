@@ -26,4 +26,7 @@ public class CourseDetailsDto {
 
     @Schema(description = "Level of the course")
     private String level;
+
+    @Schema(description = "Rating of the course")
+    private Double rating;
 }

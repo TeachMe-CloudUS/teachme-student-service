@@ -4,8 +4,8 @@ import lombok.Getter;
 
 @Getter
 public enum SubscriptionPlan {
-    BASIC(5),
-    GOLD(10),
+    BASIC(10),
+    GOLD(15),
     PLATINUM(Integer.MAX_VALUE);
 
     private final int maxCourses;
