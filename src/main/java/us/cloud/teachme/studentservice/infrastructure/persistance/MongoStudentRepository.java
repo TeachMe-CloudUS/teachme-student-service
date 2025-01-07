@@ -37,4 +37,6 @@ public interface MongoStudentRepository extends MongoRepository<Student, String>
     default Optional<Student> findStudentByUserId(String userId) {
         return findByUserId(userId);
     }
+
+    boolean existsByUserId(String userId);
 }

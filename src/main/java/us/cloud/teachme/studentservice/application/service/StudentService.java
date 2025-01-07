@@ -7,7 +7,6 @@ import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import us.cloud.teachme.studentservice.application.adapter.StudentAdapter;
 import us.cloud.teachme.studentservice.application.dto.StudentDto;
-import us.cloud.teachme.studentservice.application.port.CourseServiceClient;
 import us.cloud.teachme.studentservice.application.port.StudentRepository;
 import us.cloud.teachme.studentservice.domain.exception.StudentNotFoundByUserIdException;
 import us.cloud.teachme.studentservice.domain.exception.StudentNotFoundException;
@@ -21,7 +20,6 @@ import java.util.stream.Collectors;
 public class StudentService implements StudentAdapter {
 
     private final StudentRepository studentRepository;
-    private final CourseServiceClient courseServiceClient;
 
     @Override
     @Cacheable("studentsList")
